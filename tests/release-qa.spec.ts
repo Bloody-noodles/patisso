@@ -49,6 +49,18 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   await expect(page.locator("footer")).toContainText("Zanzibar");
   expect(await page.locator('a[href="#"]').count()).toBe(0);
 
+  const revealPage = async () => {
+    const revealTargets = await page.locator("[data-reveal]").all();
+    for (const target of revealTargets) {
+      await target.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(25);
+    }
+    await page.waitForTimeout(450);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(450);
+  };
+  await revealPage();
+
   const desktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(desktopOverflow).toBe(false);
   const desktopA11y = await new AxeBuilder({ page })
@@ -75,10 +87,11 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
+  await revealPage();
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
   await expect(page.locator(".site-nav")).toBeVisible();
-  await expect(page.locator(".food-gallery")).toHaveCSS("grid-template-columns", /\d+px\s+\d+px/);
+  await expect(page.locator(".food-gallery").first()).toHaveCSS("grid-template-columns", /\d+px\s+\d+px/);
   const mobileA11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();

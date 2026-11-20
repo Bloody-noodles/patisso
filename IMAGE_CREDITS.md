@@ -11,7 +11,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Basil Pesto Fusilli** — [Pasta al pesto con fagiolini e patate.jpg](https://commons.wikimedia.org/wiki/File:Pasta_al_pesto_con_fagiolini_e_patate.jpg) — M&A, CC BY-SA 4.0. This Commons file is categorised under both pesto pasta and fusilli dishes.
 - **Mushroom Tagliatelle** — [Pasta with cream tuffle and mushrooms in Savour Cafe.jpg](https://commons.wikimedia.org/wiki/File:Pasta_with_cream_tuffle_and_mushrooms_in_Savour_Cafe.jpg)
 - **Tomato Basil Spaghetti** — [Spaghetti al Pomodoro.JPG](https://commons.wikimedia.org/wiki/File:Spaghetti_al_Pomodoro.JPG)
-- **Creamy Garlic Penne** — [Pasta Penne.jpg](https://commons.wikimedia.org/wiki/File:Pasta_Penne.jpg)
+- **Creamy Garlic Penne** — [Creamy white sauce penne pasta.jpg](https://commons.wikimedia.org/wiki/File:Creamy_white_sauce_penne_pasta.jpg) — Alnitak-Alnilam-Mintaka, CC BY-SA 4.0.
 - **Spaghetti Pomodoro** — [Spaghetti e pomodoro.jpg](https://commons.wikimedia.org/wiki/File:Spaghetti_e_pomodoro.jpg)
 - **Penne alla Vodka** — [Penne alla Vodka.jpg](https://commons.wikimedia.org/wiki/File:Penne_alla_Vodka.jpg)
 - **Pesto Gnocchi** — [Gnocchi al pesto 01.jpg](https://commons.wikimedia.org/wiki/File:Gnocchi_al_pesto_01.jpg)
