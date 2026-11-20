@@ -26,13 +26,14 @@ export default function DemoConsolePage() {
   }, []);
 
   useEffect(() => {
-    refresh();
+    const initialFrame = window.requestAnimationFrame(refresh);
     const handleStorage = (event: StorageEvent) => {
       if (!event.key || event.key.startsWith("patisso-demo-orders-")) refresh();
     };
     window.addEventListener("storage", handleStorage);
     window.addEventListener("focus", refresh);
     return () => {
+      window.cancelAnimationFrame(initialFrame);
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("focus", refresh);
     };
