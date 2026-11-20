@@ -1,4 +1,5 @@
 import { HeroExperience } from "@/components/hero-experience";
+import { PastaCollection } from "@/components/pasta-collection";
 
 export default function Home() {
   return (
@@ -6,10 +7,10 @@ export default function Home() {
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="pãtissö home">pãtissö<span>®</span></a>
         <nav className="site-nav" aria-label="Main navigation">
-          <a href="#first-course">THE EXPERIENCE</a>
+          <a href="#pasta-collection">THE EXPERIENCE</a>
           <a href="#philosophy">OUR PHILOSOPHY</a>
         </nav>
-        <a className="header-cta" href="#first-course">
+        <a className="header-cta" href="#pasta-collection">
           <span>COME ON IN</span><span aria-hidden="true">↗</span>
         </a>
       </header>
@@ -28,6 +29,8 @@ export default function Home() {
         </div>
         <div className="first-course__stamp" aria-hidden="true">PÃ<br />TIS<br />SÖ</div>
       </section>
+
+      <PastaCollection />
 
       <footer className="site-footer">
         <a className="wordmark wordmark--footer" href="#top">pãtissö<span>®</span></a>
