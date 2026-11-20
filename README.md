@@ -57,7 +57,7 @@ Pâtissö includes a browser-based voice concierge powered by Gemini Live API.
 - The console and tracking page share the same browser storage; status changes are reflected in other open tabs.
 - If browser storage is unavailable, the voice receipt remains visible for the current session but the app does not claim that tracking was saved.
 
-**Important limitation:** this is browser-local storage, not a server-side database. Orders do not sync across devices or browsers, can be lost when site data is cleared, and the demo console is not an authenticated production admin system. Cross-device persistence and secure admin access require a separately provisioned database and authentication service. No paid database or storage service has been provisioned.
+**Important limitation:** this is browser-local storage, not a server-side database. Orders do not sync across devices or browsers, can be lost when site data is cleared, and the demo console is not an authenticated production admin system. Cross-device persistence and secure admin access require a separately provisioned database and authentication service. A locked-down Supabase schema foundation is prepared in `supabase/schema.sql`, but no database project is linked to Pâtissö and no server-side database API is active yet. The available Supabase integration advertises a free plan; no paid database or storage service has been provisioned.
 
 ## No real restaurant operations
 
