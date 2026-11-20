@@ -117,8 +117,14 @@ export function VoiceConcierge() {
   }, []);
 
   useEffect(() => {
-    const previousOrders = loadDemoOrders();
-    if (previousOrders.length > 0) { setDemoOrder(previousOrders[0]); setDemoOrderSaved(true); }
+    const initialFrame = window.requestAnimationFrame(() => {
+      const previousOrders = loadDemoOrders();
+      if (previousOrders.length > 0) {
+        setDemoOrder(previousOrders[0]);
+        setDemoOrderSaved(true);
+      }
+    });
+    return () => window.cancelAnimationFrame(initialFrame);
   }, []);
 
   useEffect(() => () => {
