@@ -10,7 +10,15 @@ export default function TrackDemoOrderPage() {
   const [order, setOrder] = useState<DemoOrder | null>(null);
   const [searched, setSearched] = useState(false);
 
-  useEffect(() => {\n    const refreshOrder = () => {\n      if (reference.trim()) setOrder(findDemoOrder(reference));\n    };\n    window.addEventListener("storage", refreshOrder);\n    return () => window.removeEventListener("storage", refreshOrder);\n  }, [reference]);\n\n  function trackOrder(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    const refreshOrder = () => {
+      if (reference.trim()) setOrder(findDemoOrder(reference));
+    };
+    window.addEventListener("storage", refreshOrder);
+    return () => window.removeEventListener("storage", refreshOrder);
+  }, [reference]);
+
+  function trackOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOrder(findDemoOrder(reference));
     setSearched(true);
