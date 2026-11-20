@@ -116,3 +116,34 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   expect(mobileA11y.violations).toEqual([]);
   expect(pageErrors).toEqual([]);
 });
+
+
+test("local demo console updates the order status shown by tracking", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem("patisso-demo-orders-v2", JSON.stringify([{
+      reference: "TEST1234",
+      items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 18000, lineTotal: 36000 }],
+      totalTsh: 36000,
+      specialInstructions: "No extra chilli",
+      createdAt: "2026-11-20T12:00:00.000Z",
+      status: "confirmed"
+    }]));
+  });
+
+  await page.goto("/demo-console");
+  await expect(page.locator("h1")).toContainText("Order");
+  await expect(page.locator(".console-order")).toContainText("TEST1234");
+  await expect(page.locator(".console-order")).toContainText("TSh 36,000");
+  await page.getByRole("button", { name: "Mark completed" }).click();
+  await expect(page.locator(".console-status")).toHaveText("completed");
+  const consoleOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+  expect(consoleOverflow).toBe(false);
+
+  await page.goto("/track");
+  await page.getByLabel("ORDER REFERENCE").fill("TEST1234");
+  await page.getByRole("button", { name: "Find demo order" }).click();
+  await expect(page.locator(".track-status")).toContainText("Demo order marked complete");
+  await expect(page.locator(".track-receipt")).toContainText("Penne Arrabbiata");
+  await expect(page.locator(".track-receipt")).toContainText("TSh 36,000");
+});
