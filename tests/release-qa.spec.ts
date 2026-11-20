@@ -119,6 +119,15 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
 
 
 test("local demo console updates the order status shown by tracking", async ({ page }) => {
+  const healthResponse = await page.request.get("/api/health");
+  expect(healthResponse.ok()).toBe(true);
+  const health = await healthResponse.json();
+  expect(health.ok).toBe(true);
+  expect(typeof health.voiceConfigured).toBe("boolean");
+  expect(health.orderStorage).toBe("browser-local-demo");
+  expect(health.realPaymentsEnabled).toBe(false);
+  expect(health.realFulfilmentEnabled).toBe(false);
+
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
     localStorage.setItem("patisso-demo-orders-v2", JSON.stringify([{
