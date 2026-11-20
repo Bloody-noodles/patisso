@@ -232,3 +232,17 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 @media(max-width:680px){html{scroll-padding-top:74px}.site-header{height:72px}.site-nav{display:flex;gap:12px;overflow-x:auto;max-width:58vw;scrollbar-width:none}.site-nav::-webkit-scrollbar{display:none}.site-nav a{white-space:nowrap;font-size:.52rem}.header-cta{display:none}
 .plate-section{min-height:0;padding:58px var(--gutter) 68px}.plate-overview{grid-template-columns:1fr;max-width:390px;gap:35px;margin-top:35px}.plate-overview-image{height:min(78vw,320px)}.plate-flower{font-size:2.2rem}
 .food-section{padding:65px var(--gutter) 75px}.food-section-heading{margin-bottom:32px}.food-section-heading h2{font-size:clamp(2.6rem,10vw,4rem)}.food-gallery{grid-template-columns:1fr 1fr;gap:28px 13px}.food-card:nth-child(3n + 2){margin-top:20px}.food-card-image{height:185px}.food-card-copy{padding:12px 1px 0}.food-card-copy h3{font-size:1.18rem}.food-card-copy p:last-child{font-size:.68rem}.food-card-copy p:first-child{font-size:.42rem}.food-divider{margin-top:48px}}
+
+
+/* Scroll-led reveals and restrained editorial micro-interactions */
+[data-reveal]{opacity:0;transform:translate3d(0,24px,0);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+[data-reveal].is-visible{opacity:1;transform:translate3d(0,0,0)}
+.food-card[data-reveal]:nth-child(3n + 2),.plate-overview-card[data-reveal]:nth-child(2){transition-delay:.09s}
+.food-card[data-reveal]:nth-child(3n),.plate-overview-card[data-reveal]:nth-child(3){transition-delay:.17s}
+.food-card-image img,.plate-overview-image img,.story-image img{will-change:transform}
+.site-nav a:focus-visible,.header-cta:focus-visible,.primary-button:focus-visible,.text-link:focus-visible,.plate-overview-card:focus-visible{outline:2px solid var(--tomato);outline-offset:5px;border-radius:4px}
+.food-card-image{box-shadow:0 12px 30px #3933270d;transition:box-shadow .35s ease,transform .35s ease}
+.food-card:hover .food-card-image{box-shadow:0 20px 42px #3933271c;transform:translateY(-4px)}
+.plate-overview-image{transition:box-shadow .35s ease,transform .35s ease}
+.plate-overview-card:hover .plate-overview-image{box-shadow:0 22px 45px #39332722;transform:translateY(-5px)}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none;will-change:auto}.food-card-image,.plate-overview-image{transition:none}}

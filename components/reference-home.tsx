@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 const groups = [
 {id:"pasta",label:"THE MAIN EVENT",title:"Pasta, with passion.",intro:"Twirl into the good stuff. There's always room for one more plate.",items:[
@@ -36,6 +36,19 @@ const groups = [
 ];
 const overview=[["Pasta","The star of our table.","#pasta","https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=900&q=88"],["Savoury","For the hearty appetite.","#savoury","https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88"],["Bakery & sweets","A sweet little finish.","#bakery","https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=88"]];
 export function ReferenceHome(){
+useEffect(()=>{
+  const selector=".hero-copy, .hero-food, .plate-section .section-heading, .plate-overview-card, .food-section-heading, .food-card, .story-image, .story-copy, .newsletter-section > .eyebrow, .newsletter-section h2, .newsletter-copy, .newsletter-form";
+  const targets=Array.from(document.querySelectorAll<HTMLElement>(selector));
+  targets.forEach((el)=>el.setAttribute("data-reveal",""));
+  if(!("IntersectionObserver" in window)){targets.forEach((el)=>el.classList.add("is-visible"));return;}
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(entry.isIntersecting){(entry.target as HTMLElement).classList.add("is-visible");observer.unobserve(entry.target);}
+    });
+  },{threshold:0.12,rootMargin:"0px 0px -45px 0px"});
+  targets.forEach((el)=>observer.observe(el));
+  return ()=>observer.disconnect();
+},[]);
 const[email,setEmail]=useState("");const[msg,setMsg]=useState("");
 function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();if(!email.trim())return;setMsg("Thanks — the pitãssö mailing list is coming soon.");setEmail("");}
 return <main className="reference-site" id="top">
