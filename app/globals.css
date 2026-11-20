@@ -177,3 +177,244 @@ a { color: inherit; text-decoration: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Milestone 02 — editorial pasta collection */
+.pasta-collection {
+  padding: 34px var(--page-gutter) 92px;
+  background: var(--wine);
+  color: var(--sand);
+  overflow: hidden;
+}
+.pasta-collection__topline {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f5ebd05c;
+  color: #f5ebd0b0;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+.pasta-collection__intro {
+  padding: clamp(82px, 12vw, 170px) 0 clamp(70px, 9vw, 120px);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.pasta-collection__intro .eyebrow { color: #f5ebd0c2; }
+.pasta-collection__intro h2 {
+  margin: 32px 0 30px;
+  font-size: clamp(4.6rem, 11.2vw, 10.5rem);
+  line-height: .78;
+  letter-spacing: -.105em;
+  font-weight: 800;
+}
+.pasta-collection__intro h2 em {
+  font-family: var(--font-editorial);
+  font-weight: 500;
+  letter-spacing: -.09em;
+}
+.pasta-collection__intro-bottom {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-left: 24%;
+}
+.pasta-collection__intro-bottom p {
+  max-width: 390px;
+  margin: 0;
+  color: #f5ebd0c7;
+  font-family: var(--font-editorial);
+  font-size: 1.55rem;
+  line-height: 1.12;
+}
+.pasta-collection__count {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #f5ebd0a6;
+  font-size: .54rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  white-space: nowrap;
+}
+.pasta-collection__count i { width: 27px; height: 1px; background: #f5ebd080; }
+.pasta-dish { position: relative; }
+.pasta-dish__image {
+  min-height: 470px;
+  position: relative;
+  overflow: hidden;
+  background-color: #6e3a3f;
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+}
+.pasta-dish__image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #21050d0a, #21050d18 70%, #21050d3b);
+  pointer-events: none;
+}
+.pasta-dish__image-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: .09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.pasta-dish__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: #f5ebd0a8;
+  font-size: .54rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+.pasta-dish--featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(330px, .8fr);
+  min-height: 670px;
+  background: var(--sand);
+  color: var(--wine);
+}
+.pasta-dish__image--featured { min-height: 670px; }
+.pasta-dish__copy {
+  position: relative;
+  padding: 36px clamp(25px, 4vw, 58px) 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.pasta-dish__copy .pasta-dish__meta { width: 100%; color: #7f011f9c; }
+.pasta-dish__overline {
+  margin: auto 0 18px;
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: #9d6872;
+}
+.pasta-dish__copy h3 {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 24px;
+  font-size: clamp(3.5rem, 6.1vw, 6.3rem);
+  line-height: .82;
+  letter-spacing: -.095em;
+  font-weight: 800;
+}
+.pasta-dish__description {
+  max-width: 340px;
+  margin: 0 0 28px;
+  font-family: var(--font-editorial);
+  font-size: 1.48rem;
+  line-height: 1.12;
+  color: #784650;
+}
+.pasta-dish__note {
+  display: inline-block;
+  padding-top: 15px;
+  border-top: 1px solid #7f011f50;
+  color: #9d6872;
+  font-size: .52rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+.pasta-dish__signature {
+  position: absolute;
+  right: 28px;
+  bottom: 18px;
+  color: #7f011f10;
+  font-family: var(--font-editorial);
+  font-size: 9rem;
+  font-style: italic;
+  line-height: .8;
+  pointer-events: none;
+}
+.pasta-collection__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(22px, 4vw, 62px);
+  padding: clamp(100px, 13vw, 180px) 7% clamp(90px, 11vw, 150px);
+}
+.pasta-dish--portrait .pasta-dish__meta { margin-bottom: 18px; }
+.pasta-dish--portrait .pasta-dish__image { min-height: clamp(360px, 47vw, 620px); }
+.pasta-dish--portrait:nth-child(2) { margin-top: 130px; }
+.pasta-dish--portrait .pasta-dish__copy { padding: 27px 0 0; }
+.pasta-dish--portrait .pasta-dish__copy h3 {
+  margin: 0 0 20px;
+  font-family: var(--font-editorial);
+  font-size: clamp(3.6rem, 6vw, 6rem);
+  font-weight: 500;
+  line-height: .78;
+  letter-spacing: -.07em;
+}
+.pasta-dish--portrait .pasta-dish__description { color: #f5ebd0c7; max-width: 390px; }
+.pasta-dish--portrait .pasta-dish__note { border-color: #f5ebd05c; color: #f5ebd0a6; }
+.pasta-dish--wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  align-items: stretch;
+  background: var(--sand);
+  color: var(--wine);
+}
+.pasta-dish__image--wide { min-height: 570px; }
+.pasta-dish__copy--wide { padding: 34px clamp(25px, 4vw, 58px) 42px; }
+.pasta-dish__copy--wide .pasta-dish__overline { margin-top: auto; }
+.pasta-dish__copy--wide h3 { font-family: var(--font-editorial); font-size: clamp(4rem, 6.8vw, 7rem); font-weight: 500; letter-spacing: -.08em; }
+.pasta-collection__outro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 35px;
+  margin-top: 34px;
+  border-top: 1px solid #f5ebd05c;
+  color: #f5ebd0a6;
+  font-size: .53rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+.pasta-collection__outro span:nth-child(2) { color: var(--sand); font-size: 1.5rem; }
+
+@media (max-width: 800px) {
+  .pasta-dish--featured, .pasta-dish--wide { grid-template-columns: 1fr 1fr; }
+  .pasta-dish__image--featured, .pasta-dish__image--wide { min-height: 590px; }
+  .pasta-dish__copy { padding: 27px 24px 32px; }
+  .pasta-dish__copy h3 { font-size: clamp(3rem, 7vw, 5rem); }
+  .pasta-dish__description { font-size: 1.28rem; }
+  .pasta-collection__pair { padding-left: 2%; padding-right: 2%; }
+}
+@media (max-width: 600px) {
+  .pasta-collection { padding-top: 25px; padding-bottom: 60px; }
+  .pasta-collection__topline { font-size: .45rem; }
+  .pasta-collection__intro { padding: 92px 0 70px; }
+  .pasta-collection__intro h2 { font-size: clamp(4rem, 15vw, 6rem); margin: 28px 0 25px; }
+  .pasta-collection__intro-bottom { display: block; margin-left: 8%; }
+  .pasta-collection__intro-bottom p { font-size: 1.35rem; }
+  .pasta-collection__count { margin-top: 25px; }
+  .pasta-dish--featured, .pasta-dish--wide { display: flex; flex-direction: column; }
+  .pasta-dish__image--featured { min-height: 460px; }
+  .pasta-dish__copy--featured { min-height: 440px; padding: 25px 23px 35px; }
+  .pasta-dish__overline { margin-top: 80px; }
+  .pasta-dish__copy h3 { font-size: clamp(4rem, 14vw, 5.7rem); }
+  .pasta-dish__description { font-size: 1.35rem; }
+  .pasta-collection__pair { grid-template-columns: 1fr; gap: 74px; padding: 100px 0 90px; }
+  .pasta-dish--portrait:nth-child(2) { margin-top: 0; }
+  .pasta-dish--portrait .pasta-dish__meta { margin-bottom: 15px; }
+  .pasta-dish--portrait .pasta-dish__image { min-height: 430px; }
+  .pasta-dish--portrait .pasta-dish__copy { padding: 25px 0 0; }
+  .pasta-dish--portrait .pasta-dish__copy h3 { font-size: 4.5rem; }
+  .pasta-dish--wide .pasta-dish__image { min-height: 430px; }
+  .pasta-dish__copy--wide { min-height: 410px; padding: 25px 23px 35px; }
+  .pasta-dish__copy--wide .pasta-dish__overline { margin-top: 65px; }
+  .pasta-dish__copy--wide h3 { font-size: 4.8rem; }
+  .pasta-collection__outro { align-items: flex-start; font-size: .43rem; line-height: 1.5; }
+  .pasta-collection__outro span:nth-child(2) { font-size: 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pasta-dish__image { scroll-behavior: auto; }
+}
