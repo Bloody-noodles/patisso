@@ -69,4 +69,4 @@ export const menuItems: MenuItem[] = menuGroups.flatMap((group) =>
 
 export const menuForAssistant = menuItems
   .map((item) => `- ${item.name} (${item.category}): ${item.description}`)
-  .join("\\n");
+  .join("\n");
