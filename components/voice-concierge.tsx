@@ -86,6 +86,8 @@ export function VoiceConcierge() {
   const [demoOrderSaved, setDemoOrderSaved] = useState(false);
   const [voiceLevel, setVoiceLevel] = useState(0);
   const panelRef = useRef<HTMLElement | null>(null);
+  const launcherRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const inputAnalyserRef = useRef<AnalyserNode | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
@@ -132,6 +134,12 @@ export function VoiceConcierge() {
     if (outputContext && outputContext.state !== "closed") void outputContext.close();
     setStatus("idle");
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    closeButtonRef.current?.focus();
+    return () => launcherRef.current?.focus();
+  }, [open]);
 
   useEffect(() => {
     const initialFrame = window.requestAnimationFrame(() => {
@@ -482,14 +490,14 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
 
   return (
     <>
-      <button className="voice-launcher" type="button" onClick={() => setOpen(true)}>
+      <button ref={launcherRef} className="voice-launcher" type="button" onClick={() => setOpen(true)}>
         <span className="voice-launcher-icon" aria-hidden="true">♫</span>
         <span>Call Pâtissö</span>
       </button>
 
       {open && (
         <div className="voice-backdrop" role="presentation" onKeyDown={(event) => {
-          if (event.key === "Escape" && status !== "connecting") { stopCall(); setOpen(false); }
+          if (event.key === "Escape") { stopCall(); setOpen(false); }
           if (event.key === "Tab" && panelRef.current) {
             const focusable = Array.from(panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'));
             if (!focusable.length) return;
@@ -502,7 +510,7 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
           if (event.target === event.currentTarget && status !== "connecting" && status !== "listening") setOpen(false);
         }}>
           <section ref={panelRef} className="voice-panel" role="dialog" aria-modal="true" aria-labelledby="voice-title" aria-describedby="voice-description">
-            <button className="voice-close" type="button" aria-label="Close voice assistant" onClick={() => {
+            <button ref={closeButtonRef} className="voice-close" type="button" aria-label="Close voice assistant" onClick={() => {
               stopCall();
               setOpen(false);
             }}>×</button>
