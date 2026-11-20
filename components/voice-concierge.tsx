@@ -81,7 +81,7 @@ export function VoiceConcierge() {
   const [status, setStatus] = useState<CallStatus>("idle");
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState("");
-  const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
+  const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);\n  const [demoOrderSaved, setDemoOrderSaved] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const inputContextRef = useRef<AudioContext | null>(null);
@@ -113,7 +113,7 @@ export function VoiceConcierge() {
 
   useEffect(() => {
     const previousOrders = loadDemoOrders();
-    if (previousOrders.length > 0) setDemoOrder(previousOrders[0]);
+    if (previousOrders.length > 0) { setDemoOrder(previousOrders[0]); setDemoOrderSaved(true); }
   }, []);
 
   useEffect(() => () => {
@@ -178,7 +178,7 @@ export function VoiceConcierge() {
             tools: [{
               functionDeclarations: [{
                 name: "create_demo_order",
-                description: "Create a simulated Pâtissö demo order only after the visitor has explicitly reviewed and verbally confirmed every item and quantity. This does not place a real restaurant order.",
+                description: "Create a simulated Pâtissö demo order only after the visitor has explicitly reviewed and verbally confirmed every item, quantity and total. Set visitorConfirmed to true only after that clear confirmation. This does not place a real restaurant order.",
                 parameters: {
                   type: "OBJECT",
                   properties: {
@@ -199,7 +199,7 @@ export function VoiceConcierge() {
                       description: "Optional short preference or note from the visitor. Do not treat this as a verified allergen or dietary guarantee."
                     }
                   },
-                  required: ["items"]
+                  required: ["items", "visitorConfirmed"]
                 }
               }]
             }],
@@ -218,7 +218,7 @@ ORDER FLOW:
 - Ask which dish or dishes they want and the quantity for each. Clarify any ambiguous item.
 - You may capture a short preference as a special instruction, but never promise it can be fulfilled.
 - Read back every item, quantity, unit price and line total, then state the grand total in Tanzanian Shillings (TSh). Ask: "Shall I confirm this demo order?"
-- Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the read-back.
+- Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the complete read-back. When calling, set visitorConfirmed to true. Never set it true based on an assumption, silence, or an earlier unrelated yes.
 - If they change their mind, update the proposed order and read it back again before asking for confirmation.
 - Call create_demo_order only with exact menu item names and valid quantities. If the tool rejects the request, apologise briefly and clarify the item.
 - After a successful tool response, tell them their demo order has been recorded, read the reference and grand total in TSh. Make clear it is simulated.
@@ -422,8 +422,8 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </ul>
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
-                <a className="voice-track-link" href="/track">Track this demo order ↗</a>
-                <p className="voice-order-foot">This is a simulated order for the Pâtissö demo. Nothing has been sent to a restaurant.</p>
+                {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}
+                <p className="voice-order-foot">{demoOrderSaved ? "Saved in this browser only. Nothing has been sent to a restaurant." : "Temporary receipt only: browser storage was unavailable. Nothing has been sent to a restaurant."}</p>
               </section>
             )}
             {status === "idle" || status === "error" ? (
