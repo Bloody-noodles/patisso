@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 
 test("desktop and mobile release QA: layout, images, links and accessibility", async ({ page }, testInfo) => {
@@ -78,6 +79,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
       domContentLoadedMs: Math.round(navigation.domContentLoadedEventEnd),
       loadEventMs: Math.round(navigation.loadEventEnd),
       sameOriginTransferBytes: resources.reduce((sum, item) => sum + item.transferSize, 0),
+      imageResourceCount: resources.filter(item => item.initiatorType === "img").length,
       resourceCount: resources.length,
     };
   });
@@ -85,6 +87,8 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
     body: JSON.stringify(performanceSnapshot, null, 2),
     contentType: "application/json",
   });
+  await writeFile(testInfo.outputPath("desktop-performance.json"), JSON.stringify(performanceSnapshot, null, 2));
+  console.log("PATISSO_PERFORMANCE_METRICS", JSON.stringify(performanceSnapshot));
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
