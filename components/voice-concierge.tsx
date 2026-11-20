@@ -1,9 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { menuForAssistant, menuItems } from "@/lib/menu";
 
 type CallStatus = "idle" | "connecting" | "listening" | "error";
 type TranscriptLine = { role: "you" | "patisso"; text: string };
+type DemoOrderItem = { name: string; quantity: number };
+type DemoOrder = {
+  reference: string;
+  items: DemoOrderItem[];
+  specialInstructions: string;
+  createdAt: string;
+};
 
 const LIVE_MODEL = "models/gemini-3.1-flash-live-preview";
 const LIVE_SOCKET =
@@ -36,11 +44,45 @@ function encodePcm(samples: Float32Array) {
   return btoa(binary);
 }
 
+function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
+  if (!Array.isArray(args.items) || args.items.length === 0 || args.items.length > 8) return null;
+
+  const requested: DemoOrderItem[] = [];
+  for (const rawItem of args.items) {
+    if (!rawItem || typeof rawItem !== "object") return null;
+    const item = rawItem as { name?: unknown; quantity?: unknown };
+    if (typeof item.name !== "string" || typeof item.quantity !== "number") return null;
+    const match = menuItems.find((entry) => entry.name.toLowerCase() === item.name!.trim().toLowerCase());
+    if (!match || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) return null;
+    const existing = requested.find((entry) => entry.name === match.name);
+    if (existing) existing.quantity += item.quantity;
+    else requested.push({ name: match.name, quantity: item.quantity });
+  }
+
+  const totalQuantity = requested.reduce((sum, item) => sum + item.quantity, 0);
+  if (totalQuantity > 20) return null;
+
+  const note = typeof args.specialInstructions === "string"
+    ? args.specialInstructions.trim().slice(0, 240)
+    : "";
+  const reference = typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID().slice(0, 8).toUpperCase()
+    : Date.now().toString(36).toUpperCase();
+
+  return {
+    reference,
+    items: requested,
+    specialInstructions: note,
+    createdAt: new Date().toLocaleString(),
+  };
+}
+
 export function VoiceConcierge() {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<CallStatus>("idle");
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState("");
+  const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const inputContextRef = useRef<AudioContext | null>(null);
@@ -129,9 +171,55 @@ export function VoiceConcierge() {
             },
             inputAudioTranscription: {},
             outputAudioTranscription: {},
+            tools: [{
+              functionDeclarations: [{
+                name: "create_demo_order",
+                description: "Create a simulated Pâtissö demo order only after the visitor has explicitly reviewed and verbally confirmed every item and quantity. This does not place a real restaurant order.",
+                parameters: {
+                  type: "OBJECT",
+                  properties: {
+                    items: {
+                      type: "ARRAY",
+                      description: "One or more exact menu item names and quantities.",
+                      items: {
+                        type: "OBJECT",
+                        properties: {
+                          name: { type: "STRING", description: "Exact dish name from the supplied menu." },
+                          quantity: { type: "INTEGER", description: "Quantity from 1 to 10." }
+                        },
+                        required: ["name", "quantity"]
+                      }
+                    },
+                    specialInstructions: {
+                      type: "STRING",
+                      description: "Optional short preference or note from the visitor. Do not treat this as a verified allergen or dietary guarantee."
+                    }
+                  },
+                  required: ["items"]
+                }
+              }]
+            }],
             systemInstruction: {
               parts: [{
-                text: "You are Pâtissö's warm, polished voice concierge. You are speaking to a visitor on the Pâtissö restaurant demo website. Be welcoming, natural, concise and helpful. Help visitors explore the food categories shown on the website: pasta, savoury favourites, bakery and sweets. Do not invent prices, ingredients, allergens, opening hours, delivery promises or restaurant facts. This is a portfolio demonstration, not a real restaurant: no real food is prepared, no payment is taken and no real order is fulfilled. If asked to order, explain that you can demonstrate the ordering journey, but the demo order is simulated. Invite the visitor to browse the menu if they need exact dish details. Speak in short, conversational turns and allow interruptions.",
+                text: `You are Pâtissö's warm, polished voice concierge. You are speaking to a visitor on the Pâtissö restaurant demo website. Be welcoming, natural, concise and helpful. Speak like a thoughtful human host, not a call-centre script. Ask one clear question at a time, use the visitor's wording, remember their preferences throughout this call, and do not repeat questions they have already answered.
+
+Here is the complete current website menu. Only recommend or accept dishes from this list. The descriptions are the only dish details supplied; do not invent ingredients, prices, sizes, allergens, availability, opening hours, or delivery promises.
+
+${menuForAssistant}
+
+Help visitors choose by asking what they feel like eating, suggesting a small number of relevant options, and explaining the menu descriptions accurately. If a visitor says they want something creamy, spicy, light, sweet, or filling, use the supplied descriptions to make a sensible suggestion without claiming unlisted ingredients. If you do not know something, say so plainly.
+
+ORDER FLOW:
+- You can build a simulated order during this voice call.
+- Ask which dish or dishes they want and the quantity for each. Clarify any ambiguous item.
+- You may capture a short preference as a special instruction, but never promise it can be fulfilled.
+- Read back the complete item list and quantities, then ask: "Shall I confirm this demo order?"
+- Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the read-back.
+- If they change their mind, update the proposed order and read it back again before asking for confirmation.
+- Call create_demo_order only with exact menu item names and valid quantities. If the tool rejects the request, apologise briefly and clarify the item.
+- After a successful tool response, tell them their demo order has been recorded and read the reference. Make clear it is simulated.
+
+This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Do not invent prices or calculate a total. Keep turns short and conversational, and allow interruptions.`
               }],
             },
           },
@@ -140,8 +228,6 @@ export function VoiceConcierge() {
 
       socket.onmessage = async (event) => {
         try {
-          // Browsers may expose a WebSocket frame as a Blob. String(Blob)
-          // produces "[object Blob]", which is not JSON; decode the frame first.
           const payload = event.data instanceof Blob
             ? await event.data.text()
             : event.data instanceof ArrayBuffer
@@ -152,11 +238,13 @@ export function VoiceConcierge() {
           if (payload === null) throw new Error("The voice service sent an unsupported message format.");
           const message = JSON.parse(payload) as {
             setupComplete?: unknown;
+            toolCall?: { functionCalls?: Array<{ id?: string; name?: string; args?: Record<string, unknown> }> };
             serverContent?: {
               inputTranscription?: { text?: string };
               outputTranscription?: { text?: string };
               modelTurn?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string } }> };
               interrupted?: boolean;
+              toolCall?: { functionCalls?: Array<{ id?: string; name?: string; args?: Record<string, unknown> }> };
             };
             error?: { message?: string };
           };
@@ -184,6 +272,43 @@ export function VoiceConcierge() {
             source.connect(processor);
             processor.connect(inputContext.destination);
             setStatus("listening");
+          }
+
+          const calls = message.toolCall?.functionCalls ?? message.serverContent?.toolCall?.functionCalls ?? [];
+          if (calls.length > 0) {
+            const functionResponses = calls.map((call) => {
+              if (call.name !== "create_demo_order") {
+                return { id: call.id, name: call.name, response: { ok: false, message: "Unknown action." } };
+              }
+              const order = makeDemoOrder(call.args ?? {});
+              if (!order) {
+                return {
+                  id: call.id,
+                  name: call.name,
+                  response: {
+                    ok: false,
+                    message: "The order could not be matched to the current menu. Please check exact dish names and quantities between 1 and 10."
+                  }
+                };
+              }
+              setDemoOrder(order);
+              setTranscript((current) => [
+                ...current,
+                { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
+              ].slice(-12));
+              return {
+                id: call.id,
+                name: call.name,
+                response: {
+                  ok: true,
+                  simulated: true,
+                  reference: order.reference,
+                  items: order.items,
+                  message: "The simulated demo order is recorded on this page. No real restaurant received it."
+                }
+              };
+            });
+            socket.send(JSON.stringify({ toolResponse: { functionResponses } }));
           }
 
           const content = message.serverContent;
@@ -277,6 +402,21 @@ export function VoiceConcierge() {
                 </p>
               ))}
             </div>
+            {demoOrder && (
+              <section className="voice-order" aria-live="polite" aria-label="Simulated demo order confirmation">
+                <div className="voice-order-heading">
+                  <span>DEMO ORDER CONFIRMED</span>
+                  <b>#{demoOrder.reference}</b>
+                </div>
+                <ul>
+                  {demoOrder.items.map((item) => (
+                    <li key={item.name}><span>{item.name}</span><b>× {item.quantity}</b></li>
+                  ))}
+                </ul>
+                {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
+                <p className="voice-order-foot">This is a simulated order for the Pâtissö demo. Nothing has been sent to a restaurant.</p>
+              </section>
+            )}
             {status === "idle" || status === "error" ? (
               <button className="voice-action" type="button" onClick={() => void startCall()}>
                 {status === "error" ? "Try again" : "Start voice call"}
