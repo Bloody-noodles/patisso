@@ -120,7 +120,7 @@ button { cursor: pointer; }
 .newsletter-decor--one { top: 17%; left: 12%; }
 .newsletter-decor--two { right: 13%; top: 18%; color: var(--tomato); animation-delay: -2s; }
 .newsletter-decor--three { left: 22%; bottom: 13%; color: #c99b35; animation-delay: -4s; }
-.site-footer { padding: 65px var(--gutter) 24px; display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 40px; background: #25251f; color: #f8f6ef; }
+.site-footer { padding: 65px var(--gutter) 24px; display: grid; grid-template-columns: 1.35fr repeat(4, 1fr); gap: 40px; background: #25251f; color: #f8f6ef; }
 .footer-brand p { margin: 22px 0 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -.04em; line-height: .98; }
 .footer-brand p em { color: #e99a6e; font-family: var(--serif); font-weight: 500; }
 .wordmark--footer { font-size: clamp(2.5rem, 4vw, 4rem); }
@@ -272,3 +272,5 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .hero-food-image{background:#e8e3d8}
 @media(max-width:680px){.food-marquee{padding:15px 0}.food-marquee-track{gap:24px;animation-duration:27s}.food-marquee-track span{font-size:.57rem}.site-nav a.is-active::after{transform:scaleX(1)}.hero-food-image{width:100%}}
 @media(prefers-reduced-motion:reduce){.food-marquee-track,.hero-food-image,.hero-food-image img{animation:none!important}.food-marquee{white-space:normal}.food-marquee-track{width:100%;justify-content:center;flex-wrap:wrap;gap:10px 16px}}
+
+.footer-contact a{overflow-wrap:anywhere;}
