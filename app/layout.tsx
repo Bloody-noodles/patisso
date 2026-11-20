@@ -2,22 +2,17 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "pãtissö — A little more than pasta",
-  description:
-    "A considered menu of handmade pasta, comfort food and sweet things. Welcome to pãtissö.",
-  applicationName: "pãtissö",
+  title: "pitãssö — Take a taste. Come join us.",
+  description: "A pasta-led food experience with something delicious for every appetite. Welcome to pitãssö.",
+  applicationName: "pitãssö",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#7F011F",
+  themeColor: "#f7f6f2",
   colorScheme: "light",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>{children}</body>

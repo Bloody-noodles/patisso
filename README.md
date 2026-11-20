@@ -1,87 +1,43 @@
-# pãtissö
+# pitãssö
 
-A premium, pasta-led food destination and AI-assisted ordering experience.
+A pasta-led restaurant brand experience inspired by the supplied visual reference.
 
-## Brand system
+## Brand and content
 
-- **Wordmark:** pãtissö
-- **Repository slug:** patisso
-- **Primary wine:** `#7F011F`
-- **Light sand:** `#F5EBD0`
-- **Visual direction:** cinematic food imagery, editorial typography, generous negative space, and scroll-led storytelling.
+- **Brand:** pitãssö
+- **Visual direction:** warm marble/paper texture, overhead food photography, floating garnish details, editorial serif headlines, tomato-orange accents, and spacious food-led compositions.
+- **Food emphasis:** pasta 50%; cheeseburgers 5%; fries 5%; macaroni 5%; salads 5%; cakes, doughnuts, meat pies, buns and other food 30%.
+- These percentages guide visual emphasis and content architecture, not a fixed number of dishes.
 
-## Product direction
+## Reference structure implemented
 
-The website is designed to stand on its own as a polished food brand experience. The longer-term product includes:
+1. Header and split editorial hero.
+2. Centred menu discovery section with category filters and a three-card carousel.
+3. Food-led brand/story feature.
+4. Centred newsletter sign-up treatment.
+5. Multi-column footer.
 
-- An editorial menu with pasta as the primary category.
-- Supporting food collections: burgers, fries, macaroni, salads, cakes, doughnuts, meat pies, buns and more.
-- Responsive cart and order review.
-- AI ordering assistant with text and conversational voice interfaces.
-- Order confirmation and tracking.
-- A clearly labelled demo checkout until a real payment and fulfilment integration exists.
-
-The assistant must use verified menu, ingredient and allergen data. It must not invent availability or make unsupported allergy assurances.
-
-## Food emphasis
-
-- Pasta — 50%
-- Burgers — 5%
-- French fries — 5%
-- Macaroni — 5%
-- Salads — 5%
-- Bakery and other food — 30%
-
-These percentages guide the visual emphasis and content architecture, not a fixed number of menu items.
+The design follows the reference's layout language while retaining pitãssö's name and food offering hierarchy. Images and menu descriptions are editorial placeholders until final menu assets and approved menu data are supplied.
 
 ## Stack
 
 - Next.js App Router
-- React
+- React 19
 - TypeScript
-- Custom CSS foundation
-- Motion and realtime voice dependencies will be selected when their requirements are implemented.
+- Custom responsive CSS
 
 ## Local development
-
-Requirements: Node.js 20.9 or newer.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+## Quality checks
 
-## Build phases
+```bash
+npm run lint
+npm run build
+```
 
-1. **Brand and cinematic hero:** establish the visual system and pasta-led opening sequence.
-2. **Editorial menu:** build the full vertical food story with distinct motion treatments for each category.
-3. **Ordering experience:** menu data, cart, AI text and voice ordering.
-4. **Operations:** checkout, persistence, order tracking and admin tools.
-
-## Milestone status
-
-### Milestone 01 — Brand experience and cinematic hero
-
-- [x] Establish wine-red and light-sand design tokens.
-- [x] Establish bold grotesque display typography with an editorial serif contrast.
-- [x] Build responsive brand navigation and a responsive hero composition.
-- [x] Add an animated pasta/fork line-art gesture and motion-aware entrance sequence.
-- [x] Add a reduced-motion fallback.
-- [ ] Replace the temporary hero photograph with approved final cinematic food media.
-- [x] GitHub Actions quality workflow passed (lint and production build).
-
-**Status:** automated quality check passed; final cinematic media and responsive visual review remain open.
-
-### Milestone 02 — The pasta collection
-
-- [x] Establish a pasta-first editorial collection section.
-- [x] Create four image-led pasta showcases with varied compositions.
-- [x] Preserve pasta as the dominant food story.
-- [ ] Verify image selection and visual crop on desktop and mobile.
-- [ ] Run lint and production build after implementation.
-
-**Status:** first implementation pushed; visual review and CI verification pending.
-
-The hero currently uses a temporary remote photograph and an original SVG/CSS motion treatment. The final cinematic fork-to-plate footage or image sequence is a separate asset decision, not represented as completed. Pasta dish imagery and descriptions are editorial concept content pending confirmation against the final restaurant menu.
+The newsletter form is currently a front-end interaction only; it does not persist or send email addresses. No payment, ordering, or real fulfilment is implied by this visual rebuild.
