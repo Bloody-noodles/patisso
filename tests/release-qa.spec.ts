@@ -23,7 +23,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
 
   await page.waitForFunction(() => {
     const images = Array.from(document.images);
-    return images.length >= 33 && images.every(image => image.complete);
+    return images.length >= 42 && images.every(image => image.complete);
   }, null, { timeout: 180_000 });
 
   const imageAudit = await page.locator("img").evaluateAll(images =>
@@ -34,11 +34,11 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
       loaded: (image as HTMLImageElement).naturalWidth > 0,
     }))
   );
-  expect(imageAudit).toHaveLength(33);
+  expect(imageAudit).toHaveLength(42);
   expect(imageAudit.filter(image => !image.loaded)).toEqual([]);
   expect(imageAudit.filter(image => !image.alt.trim())).toEqual([]);
-  expect(await page.locator(".food-card").count()).toBe(28);
-  expect(await page.locator(".food-card img").count()).toBe(28);
+  expect(await page.locator(".food-card").count()).toBe(36);
+  expect(await page.locator(".food-card img").count()).toBe(36);
 
   const expectedLinks = [
     'a[href^="https://www.instagram.com/rigid_mayor"]',
