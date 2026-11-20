@@ -132,6 +132,8 @@ test("local demo console updates the order status shown by tracking", async ({ p
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
+    if (localStorage.getItem("patisso-demo-test-seeded")) return;
+    localStorage.setItem("patisso-demo-test-seeded", "1");
     localStorage.setItem("patisso-demo-orders-v2", JSON.stringify([{
       reference: "TEST1234",
       items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 18000, lineTotal: 36000 }],
@@ -146,6 +148,8 @@ test("local demo console updates the order status shown by tracking", async ({ p
   await expect(page.locator("h1")).toContainText("Order");
   await expect(page.locator(".console-order")).toContainText("TEST1234");
   await expect(page.locator(".console-order")).toContainText("TSh 36,000");
+  const consoleA11y = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  expect(consoleA11y.violations).toEqual([]);
   await page.getByRole("button", { name: "Mark completed" }).click();
   await expect(page.locator(".console-status")).toHaveText("completed");
   const consoleOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
