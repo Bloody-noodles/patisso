@@ -326,3 +326,38 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .voice-order li b{flex:0 0 auto;color:var(--tomato-contrast);font-size:.68rem}
 .voice-order-note{margin:10px 0 0;padding-top:9px;border-top:1px solid #e8ded1;color:var(--muted);font-size:.65rem;line-height:1.5}
 .voice-order-foot{margin:11px 0 0;color:#777064;font-size:.57rem;line-height:1.55}
+
+
+/* TZS menu prices and browser-saved demo order tracking */
+.food-card-price{display:inline-block;margin-top:12px;color:var(--tomato-contrast);font-size:.83rem;font-weight:900;letter-spacing:.015em}
+.voice-order li span{display:flex;flex-direction:column;gap:3px}
+.voice-order li small{color:var(--muted);font-size:.58rem}
+.voice-order-total,.track-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:13px;padding-top:12px;border-top:1px solid #e8ded1;color:var(--tomato-contrast);font-size:.59rem;font-weight:900;letter-spacing:.1em}
+.voice-order-total b,.track-total b{font-size:1.02rem;letter-spacing:0;color:var(--ink)}
+.voice-track-link{display:inline-block;margin-top:12px;color:var(--tomato-contrast);font-size:.67rem;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.track-page{min-height:100svh;background:#f7f4ec;color:var(--ink)}
+.track-header{height:82px;padding:0 clamp(22px,6vw,84px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ddd7ca}
+.track-back{font-size:.72rem;font-weight:700;color:var(--tomato-contrast)}
+.track-content{width:min(100% - 40px,620px);margin:0 auto;padding:76px 0 100px}
+.track-content h1{margin:16px 0;font:600 clamp(3.3rem,9vw,5.8rem)/.94 var(--serif);letter-spacing:-.065em}
+.track-content h1 em{color:var(--tomato-contrast);font-weight:500}
+.track-intro{max-width:430px;color:var(--muted);font-size:.84rem;line-height:1.7}
+.track-form{display:grid;gap:10px;margin:30px 0 25px}
+.track-form label{font-size:.57rem;font-weight:900;letter-spacing:.13em;color:var(--tomato-contrast)}
+.track-form input{width:100%;min-height:50px;padding:0 14px;border:1px solid #d8d0c3;border-radius:4px;background:#fffdf8;color:var(--ink);font:inherit}
+.track-form button{min-height:49px;border:0;border-radius:4px;background:var(--tomato-contrast);color:#fff;font-size:.72rem;font-weight:900}
+.track-not-found{padding:14px;border:1px solid #e3c9bd;background:#fff8f3;color:#8d352c;font-size:.75rem;line-height:1.6}
+.track-receipt{margin-top:26px;padding:22px;border:1px solid #ded2c3;border-radius:7px;background:#fffdf8;box-shadow:0 15px 40px #3933270d}
+.track-receipt-top{display:flex;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #e8ded1;color:var(--tomato-contrast);font-size:.57rem;font-weight:900;letter-spacing:.1em}
+.track-receipt-top b{color:var(--ink);letter-spacing:.03em}
+.track-status{display:flex;align-items:center;gap:8px;margin-top:17px;font-size:.78rem;font-weight:800}
+.track-status-dot{width:8px;height:8px;border-radius:50%;background:#64845a;box-shadow:0 0 0 4px #64845a18}
+.track-created{margin:7px 0 0;color:var(--muted);font-size:.64rem}
+.track-receipt ul{display:grid;gap:13px;margin:22px 0;padding:0;list-style:none}
+.track-receipt li{display:flex;justify-content:space-between;gap:14px;font-size:.75rem;line-height:1.45}
+.track-receipt li span{display:flex;flex-direction:column;gap:3px}
+.track-receipt li small{color:var(--muted);font-size:.62rem}
+.track-receipt li>b{white-space:nowrap}
+.track-note{padding-top:12px;border-top:1px solid #e8ded1;color:var(--muted);font-size:.7rem;line-height:1.55}
+.track-disclaimer{margin:18px 0 0;padding-top:14px;border-top:1px solid #e8ded1;color:#827b70;font-size:.62rem;line-height:1.65}
+@media(max-width:600px){.track-header{height:70px}.track-content{padding-top:56px}.track-receipt{padding:17px}.track-receipt li{font-size:.69rem}}
