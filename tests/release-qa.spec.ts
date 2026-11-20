@@ -6,6 +6,13 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   page.on("pageerror", error => pageErrors.push(error.message));
 
   await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.addInitScript(() => {
+    (window as Window & { __lcp?: number }).__lcp = 0;
+    new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      (window as Window & { __lcp?: number }).__lcp = entries[entries.length - 1]?.startTime ?? 0;
+    }).observe({ type: "largest-contentful-paint", buffered: true });
+  });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("h1")).toContainText("Take a taste");
   await page.evaluate(() => document.fonts.ready);
@@ -47,18 +54,39 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   const desktopA11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
-  expect(desktopA11y.violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("patisso-desktop.png"), fullPage: true, animations: "disabled" });
+
+  const performanceSnapshot = await page.evaluate(() => {
+    const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+    const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+    return {
+      largestContentfulPaintMs: (window as Window & { __lcp?: number }).__lcp ?? 0,
+      timeToFirstByteMs: Math.round(navigation.responseStart),
+      domContentLoadedMs: Math.round(navigation.domContentLoadedEventEnd),
+      loadEventMs: Math.round(navigation.loadEventEnd),
+      sameOriginTransferBytes: resources.reduce((sum, item) => sum + item.transferSize, 0),
+      resourceCount: resources.length,
+    };
+  });
+  await testInfo.attach("desktop-performance.json", {
+    body: JSON.stringify(performanceSnapshot, null, 2),
+    contentType: "application/json",
+  });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
   await expect(page.locator(".site-nav")).toBeVisible();
-  await expect(page.locator(".food-gallery")).toHaveCSS("grid-template-columns", /\d+px\s+\d+px/);
+  await expect(page.locator(".food-gallery")).toHaveCSS("grid-template-columns", /\\d+px\\s+\\d+px/);
+  const mobileA11y = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile.png"), fullPage: true, animations: "disabled" });
 
   await page.keyboard.press("Tab");
   await expect(page.locator(".skip-link")).toBeFocused();
+  expect(desktopA11y.violations).toEqual([]);
+  expect(mobileA11y.violations).toEqual([]);
   expect(pageErrors).toEqual([]);
 });
