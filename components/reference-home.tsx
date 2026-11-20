@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { VoiceConcierge } from "./voice-concierge";
 import { formatTsh, menuGroups as groups } from "@/lib/menu";
-const overview=[["Pasta","The star of our table.","#pasta","https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=900&q=88"],["Savoury","For the hearty appetite.","#savoury","https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88"],["Bakery & sweets","A sweet little finish.","#bakery","https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=88"],["Drinks","A little something to sip.","#drinks","https://images.unsplash.com/photo-1513558161293-c1b6fc6a6e09?auto=format&fit=crop&w=900&q=88"]];
+const overview=[["Pasta","The star of our table.","#pasta","https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=900&q=88"],["Savoury","For the hearty appetite.","#savoury","https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88"],["Bakery & sweets","A sweet little finish.","#bakery","https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=88"],["Drinks","A little something to sip.","#drinks","https://commons.wikimedia.org/wiki/Special:FilePath/Fresh_lemonade_and_lemons.jpg?width=1200"]];
 export function ReferenceHome(){
 useEffect(()=>{
   const selector=".hero-copy, .hero-food, .plate-section .section-heading, .plate-overview-card, .food-section-heading, .food-card, .story-image, .story-copy, .newsletter-section > .eyebrow, .newsletter-section h2, .newsletter-copy, .newsletter-section .primary-button";
