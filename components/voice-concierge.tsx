@@ -7,7 +7,7 @@ type TranscriptLine = { role: "you" | "patisso"; text: string };
 
 const LIVE_MODEL = "models/gemini-3.1-flash-live-preview";
 const LIVE_SOCKET =
-  "wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained?access_token=";
+  "wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=";
 
 function resample(input: Float32Array, fromRate: number, toRate: number) {
   if (fromRate === toRate) return input;
