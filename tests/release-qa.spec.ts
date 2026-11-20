@@ -89,6 +89,10 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   });
   await writeFile(testInfo.outputPath("desktop-performance.json"), JSON.stringify(performanceSnapshot, null, 2));
   console.log("PATISSO_PERFORMANCE_METRICS", JSON.stringify(performanceSnapshot));
+  expect(performanceSnapshot.largestContentfulPaintMs).toBeGreaterThan(0);
+  expect(performanceSnapshot.largestContentfulPaintMs).toBeLessThan(3_000);
+  expect(performanceSnapshot.domContentLoadedMs).toBeLessThan(2_000);
+  expect(performanceSnapshot.sameOriginTransferBytes).toBeLessThan(1_500_000);
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
