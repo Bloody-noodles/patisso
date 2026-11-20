@@ -47,10 +47,20 @@ export function saveDemoOrder(order: DemoOrder): boolean {
 export function loadDemoOrders(): DemoOrder[] {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isDemoOrder).slice(0, 100);
+    if (raw) {
+      const parsed: unknown = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(isDemoOrder).slice(0, 100);
+    }
+    const legacyRaw = window.localStorage.getItem("patisso-demo-orders-v1");
+    if (!legacyRaw) return [];
+    const legacy: unknown = JSON.parse(legacyRaw);
+    if (!Array.isArray(legacy)) return [];
+    const migrated = legacy.map((value) => value && typeof value === "object"
+      ? { ...(value as Record<string, unknown>), status: (value as Record<string, unknown>).status ?? "confirmed" }
+      : value).filter(isDemoOrder).slice(0, 100);
+    if (migrated.length > 0) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    return migrated;
   } catch {
     return [];
   }
