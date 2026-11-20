@@ -1,17 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { menuForAssistant, menuItems } from "@/lib/menu";
+import { formatTsh, menuForAssistant, menuItems } from "@/lib/menu";
+import { loadDemoOrders, saveDemoOrder, type DemoOrder } from "@/lib/demo-orders";
 
 type CallStatus = "idle" | "connecting" | "listening" | "error";
 type TranscriptLine = { role: "you" | "patisso"; text: string };
-type DemoOrderItem = { name: string; quantity: number };
-type DemoOrder = {
-  reference: string;
-  items: DemoOrderItem[];
-  specialInstructions: string;
-  createdAt: string;
-};
 
 const LIVE_MODEL = "models/gemini-3.1-flash-live-preview";
 const LIVE_SOCKET =
@@ -47,7 +41,7 @@ function encodePcm(samples: Float32Array) {
 function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
   if (!Array.isArray(args.items) || args.items.length === 0 || args.items.length > 8) return null;
 
-  const requested: DemoOrderItem[] = [];
+  const requested: DemoOrder["items"] = [];
   for (const rawItem of args.items) {
     if (!rawItem || typeof rawItem !== "object") return null;
     const item = rawItem as { name?: unknown; quantity?: unknown };
@@ -56,8 +50,10 @@ function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
     const match = menuItems.find((entry) => entry.name.toLowerCase() === itemName);
     if (!match || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) return null;
     const existing = requested.find((entry) => entry.name === match.name);
-    if (existing) existing.quantity += item.quantity;
-    else requested.push({ name: match.name, quantity: item.quantity });
+    if (existing) {
+      existing.quantity += item.quantity;
+      existing.lineTotal = existing.quantity * existing.unitPrice;
+    } else requested.push({ name: match.name, quantity: item.quantity, unitPrice: match.price, lineTotal: match.price * item.quantity });
   }
 
   const totalQuantity = requested.reduce((sum, item) => sum + item.quantity, 0);
@@ -73,8 +69,10 @@ function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
   return {
     reference,
     items: requested,
+    totalTsh: requested.reduce((sum, item) => sum + item.lineTotal, 0),
     specialInstructions: note,
-    createdAt: new Date().toLocaleString(),
+    createdAt: new Date().toISOString(),
+    status: "confirmed",
   };
 }
 
@@ -111,6 +109,11 @@ export function VoiceConcierge() {
     if (inputContext && inputContext.state !== "closed") void inputContext.close();
     if (outputContext && outputContext.state !== "closed") void outputContext.close();
     setStatus("idle");
+  }, []);
+
+  useEffect(() => {
+    const previousOrders = loadDemoOrders();
+    if (previousOrders.length > 0) setDemoOrder(previousOrders[0]);
   }, []);
 
   useEffect(() => () => {
@@ -204,7 +207,7 @@ export function VoiceConcierge() {
               parts: [{
                 text: `You are Pâtissö's warm, polished voice concierge. You are speaking to a visitor on the Pâtissö restaurant demo website. Be welcoming, natural, concise and helpful. Speak like a thoughtful human host, not a call-centre script. Ask one clear question at a time, use the visitor's wording, remember their preferences throughout this call, and do not repeat questions they have already answered.
 
-Here is the complete current website menu. Only recommend or accept dishes from this list. The descriptions are the only dish details supplied; do not invent ingredients, prices, sizes, allergens, availability, opening hours, or delivery promises.
+Here is the complete current website menu. Only recommend or accept dishes from this list. The descriptions and TSh prices below are the complete menu details supplied; do not invent ingredients, sizes, allergens, availability, opening hours, or delivery promises.
 
 ${menuForAssistant}
 
@@ -214,13 +217,13 @@ ORDER FLOW:
 - You can build a simulated order during this voice call.
 - Ask which dish or dishes they want and the quantity for each. Clarify any ambiguous item.
 - You may capture a short preference as a special instruction, but never promise it can be fulfilled.
-- Read back the complete item list and quantities, then ask: "Shall I confirm this demo order?"
+- Read back every item, quantity, unit price and line total, then state the grand total in Tanzanian Shillings (TSh). Ask: "Shall I confirm this demo order?"
 - Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the read-back.
 - If they change their mind, update the proposed order and read it back again before asking for confirmation.
 - Call create_demo_order only with exact menu item names and valid quantities. If the tool rejects the request, apologise briefly and clarify the item.
-- After a successful tool response, tell them their demo order has been recorded and read the reference. Make clear it is simulated.
+- After a successful tool response, tell them their demo order has been recorded, read the reference and grand total in TSh. Make clear it is simulated.
 
-This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Do not invent prices or calculate a total. Keep turns short and conversational, and allow interruptions.`
+This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Use only the exact TSh prices in the menu. The order tool calculates and returns the authoritative total; never estimate or mentally recalculate it. Keep turns short and conversational, and allow interruptions.`
               }],
             },
           },
@@ -293,6 +296,7 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 };
               }
               setDemoOrder(order);
+              saveDemoOrder(order);
               setTranscript((current) => [
                 ...current,
                 { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
@@ -305,7 +309,9 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                   simulated: true,
                   reference: order.reference,
                   items: order.items,
-                  message: "The simulated demo order is recorded on this page. No real restaurant received it."
+                  totalTsh: order.totalTsh,
+                  formattedTotal: formatTsh(order.totalTsh),
+                  message: "The simulated demo order is recorded in this browser. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
                 }
               };
             });
@@ -411,10 +417,12 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </div>
                 <ul>
                   {demoOrder.items.map((item) => (
-                    <li key={item.name}><span>{item.name}</span><b>× {item.quantity}</b></li>
+                    <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>
                   ))}
                 </ul>
+                <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
+                <a className="voice-track-link" href="/track">Track this demo order ↗</a>
                 <p className="voice-order-foot">This is a simulated order for the Pâtissö demo. Nothing has been sent to a restaurant.</p>
               </section>
             )}
