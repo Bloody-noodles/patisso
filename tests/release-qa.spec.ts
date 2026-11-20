@@ -66,6 +66,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   const desktopA11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
+  await page.screenshot({ path: testInfo.outputPath("patisso-desktop-viewport.png"), fullPage: false, animations: "disabled" });
   await page.screenshot({ path: testInfo.outputPath("patisso-desktop.png"), fullPage: true, animations: "disabled" });
 
   const performanceSnapshot = await page.evaluate(() => {
@@ -91,10 +92,12 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
   await expect(page.locator(".site-nav")).toBeVisible();
-  await expect(page.locator(".food-gallery").first()).toHaveCSS("grid-template-columns", /\d+px\s+\d+px/);
+  const mobileGridColumns = await page.locator(".food-gallery").first().evaluate(element => getComputedStyle(element).gridTemplateColumns.split(" ").length);
+  expect(mobileGridColumns).toBe(2);
   const mobileA11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
+  await page.screenshot({ path: testInfo.outputPath("patisso-mobile-viewport.png"), fullPage: false, animations: "disabled" });
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile.png"), fullPage: true, animations: "disabled" });
 
   await page.keyboard.press("Tab");
