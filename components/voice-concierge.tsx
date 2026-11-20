@@ -179,11 +179,11 @@ export function VoiceConcierge() {
           const content = message.serverContent;
           if (content?.inputTranscription?.text) {
             const text = content.inputTranscription.text.trim();
-            if (text) setTranscript((current) => [...current, { role: "you", text }].slice(-12));
+            if (text) setTranscript((current) => [...current, { role: "you" as const, text }].slice(-12));
           }
           if (content?.outputTranscription?.text) {
             const text = content.outputTranscription.text.trim();
-            if (text) setTranscript((current) => [...current, { role: "patisso", text }].slice(-12));
+            if (text) setTranscript((current) => [...current, { role: "patisso" as const, text }].slice(-12));
           }
           if (content?.interrupted) nextPlaybackTimeRef.current = outputContext.currentTime;
 
