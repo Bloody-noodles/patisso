@@ -39,6 +39,7 @@ function encodePcm(samples: Float32Array) {
 }
 
 function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
+  if (args.visitorConfirmed !== true) return null;
   if (!Array.isArray(args.items) || args.items.length === 0 || args.items.length > 8) return null;
 
   const requested: DemoOrder["items"] = [];
@@ -182,6 +183,7 @@ export function VoiceConcierge() {
                 parameters: {
                   type: "OBJECT",
                   properties: {
+                    visitorConfirmed: { type: "BOOLEAN", description: "Must be true only after the visitor explicitly confirms the complete read-back." },
                     items: {
                       type: "ARRAY",
                       description: "One or more exact menu item names and quantities.",
@@ -296,7 +298,8 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 };
               }
               setDemoOrder(order);
-              saveDemoOrder(order);
+              const stored = saveDemoOrder(order);
+              setDemoOrderSaved(stored);
               setTranscript((current) => [
                 ...current,
                 { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
@@ -311,7 +314,10 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                   items: order.items,
                   totalTsh: order.totalTsh,
                   formattedTotal: formatTsh(order.totalTsh),
-                  message: "The simulated demo order is recorded in this browser. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
+                  stored,
+                  message: stored
+                    ? "The simulated demo order is saved in this browser. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
+                    : "The simulated order receipt is available for this call, but browser storage was unavailable so tracking may not work after the call. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
                 }
               };
             });
@@ -422,7 +428,7 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </ul>
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
-                {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}
+                {demoOrderSaved && {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}}
                 <p className="voice-order-foot">{demoOrderSaved ? "Saved in this browser only. Nothing has been sent to a restaurant." : "Temporary receipt only: browser storage was unavailable. Nothing has been sent to a restaurant."}</p>
               </section>
             )}
