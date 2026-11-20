@@ -227,7 +227,7 @@ ORDER FLOW:
 - Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the complete read-back. When calling, set visitorConfirmed to true. Never set it true based on an assumption, silence, or an earlier unrelated yes.
 - If they change their mind, update the proposed order and read it back again before asking for confirmation.
 - Call create_demo_order only with exact menu item names and valid quantities. If the tool rejects the request, apologise briefly and clarify the item.
-- After a successful tool response, tell them their demo order has been recorded, read the reference and grand total in TSh. Make clear it is simulated.
+- After a successful tool response, read the reference and grand total in TSh. If stored is true, say the demo order is saved in this browser. If stored is false, explain that the receipt is temporary and tracking may not persist. Always make clear it is simulated.
 
 This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Use only the exact TSh prices in the menu. The order tool calculates and returns the authoritative total; never estimate or mentally recalculate it. Keep turns short and conversational, and allow interruptions.`
               }],
