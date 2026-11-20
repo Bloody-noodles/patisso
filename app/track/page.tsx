@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { formatTsh } from "@/lib/menu";
 import { findDemoOrder, type DemoOrder } from "@/lib/demo-orders";
@@ -10,7 +10,7 @@ export default function TrackDemoOrderPage() {
   const [order, setOrder] = useState<DemoOrder | null>(null);
   const [searched, setSearched] = useState(false);
 
-  function trackOrder(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {\n    const refreshOrder = () => {\n      if (reference.trim()) setOrder(findDemoOrder(reference));\n    };\n    window.addEventListener("storage", refreshOrder);\n    return () => window.removeEventListener("storage", refreshOrder);\n  }, [reference]);\n\n  function trackOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOrder(findDemoOrder(reference));
     setSearched(true);
@@ -35,7 +35,7 @@ export default function TrackDemoOrderPage() {
         {order && (
           <section className="track-receipt" aria-live="polite">
             <div className="track-receipt-top"><span>DEMO ORDER FOUND</span><b>#{order.reference}</b></div>
-            <div className="track-status"><span className="track-status-dot" /> {order.status === "confirmed" ? "Demo order confirmed" : order.status === "completed" ? "Demo order marked complete" : "Demo order cancelled"}</div>
+            <div className="track-status"><span className={"track-status-dot track-status-dot--" + order.status} /> {order.status === "confirmed" ? "Demo order confirmed" : order.status === "completed" ? "Demo order marked complete" : "Demo order cancelled"}</div>
             <p className="track-created">Created {new Date(order.createdAt).toLocaleString()}</p>
             <ul>
               {order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>)}
