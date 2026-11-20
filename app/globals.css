@@ -281,3 +281,37 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .skip-link{position:absolute;top:10px;left:10px;z-index:100;padding:12px 16px;transform:translateY(-160%);background:var(--ink);color:#fff;border-radius:4px;font-size:.8rem;font-weight:700}
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--tomato);outline-offset:3px}
 .newsletter-section .primary-button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+
+/* Pâtissö voice concierge */
+.voice-launcher{position:fixed;right:clamp(18px,3vw,42px);bottom:clamp(18px,3vw,38px);z-index:30;display:flex;align-items:center;gap:11px;padding:14px 19px;border:0;border-radius:999px;background:var(--tomato-contrast);color:#fffdf7;font-size:.76rem;font-weight:800;letter-spacing:.02em;box-shadow:0 12px 34px #29201835;transition:transform .25s,box-shadow .25s}
+.voice-launcher:hover{transform:translateY(-3px);box-shadow:0 17px 38px #29201842}
+.voice-launcher-icon{display:grid;place-items:center;width:25px;height:25px;border:1px solid #ffffff80;border-radius:50%;font-size:.9rem}
+.voice-backdrop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;background:#191711a8;backdrop-filter:blur(8px)}
+.voice-panel{width:min(100%,440px);max-height:min(92svh,760px);overflow:auto;position:relative;padding:42px 34px 28px;border:1px solid #ffffffa8;border-radius:9px;background:var(--paper-white);text-align:center;box-shadow:0 28px 90px #100e0b55}
+.voice-close{position:absolute;top:13px;right:15px;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);font-size:1.4rem}
+.voice-kicker{margin:0;color:var(--tomato-contrast);font-size:.56rem;font-weight:800;letter-spacing:.2em}
+.voice-panel h2{margin:15px 0 10px;font:600 clamp(2.6rem,9vw,3.5rem)/.98 var(--serif);letter-spacing:-.065em}
+.voice-panel h2 em{color:var(--tomato-contrast);font-weight:500}
+.voice-intro{max-width:315px;margin:0 auto;color:var(--muted);font-size:.78rem;line-height:1.7}
+.voice-orb{width:112px;height:112px;margin:25px auto 12px;position:relative;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9ef 0,#f4d8c8 35%,#d8a18c 100%);box-shadow:0 0 0 10px #b83a160c,0 12px 35px #b83a1626}
+.voice-orb span,.voice-orb i,.voice-orb b{position:absolute;display:block;border:1px solid #b83a1660;border-radius:50%;inset:12px}
+.voice-orb i{inset:23px}.voice-orb b{inset:34px;background:var(--tomato-contrast);border:0;box-shadow:0 0 20px #b83a1670}
+.voice-orb--connecting span,.voice-orb--listening span{animation:voice-pulse 1.8s ease-out infinite}
+.voice-orb--connecting i,.voice-orb--listening i{animation:voice-pulse 1.8s .6s ease-out infinite}
+.voice-orb--listening b{animation:voice-core 1s ease-in-out infinite alternate}
+.voice-status{margin:0;color:var(--ink);font-size:.73rem;font-weight:800}
+.voice-error{margin:9px 0 0;color:#a52b24;font-size:.7rem;line-height:1.5}
+.voice-transcript{min-height:58px;max-height:150px;overflow:auto;margin:19px 0 15px;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:#fbfaf7;text-align:left}
+.voice-transcript>p{margin:7px 0;color:var(--muted);font-size:.68rem;line-height:1.55}
+.voice-line{display:flex;gap:9px;color:var(--ink)!important}
+.voice-line b{flex:0 0 55px;color:var(--tomato-contrast);font-size:.5rem;letter-spacing:.1em}
+.voice-action{width:100%;min-height:48px;border:0;border-radius:5px;background:var(--tomato-contrast);color:white;font-size:.72rem;font-weight:800;transition:background .2s,transform .2s}
+.voice-action:hover{background:var(--tomato-dark);transform:translateY(-1px)}
+.voice-action--end{background:#292720}
+.voice-disclaimer{margin:13px 0 0;color:#88847b;font-size:.56rem;letter-spacing:.04em}
+@keyframes voice-pulse{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.55);opacity:0}}
+@keyframes voice-core{from{transform:scale(.9)}to{transform:scale(1.08)}}
+.voice-launcher:focus-visible,.voice-close:focus-visible,.voice-action:focus-visible{outline:3px solid var(--tomato);outline-offset:4px}
+@media(max-width:480px){.voice-panel{padding:38px 22px 24px}.voice-launcher{right:15px;bottom:15px;padding:12px 15px}.voice-orb{width:98px;height:98px}}
+@media(prefers-reduced-motion:reduce){.voice-orb span,.voice-orb i,.voice-orb b{animation:none!important}}

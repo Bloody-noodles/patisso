@@ -41,3 +41,17 @@ npm run build
 ```
 
 The newsletter form is currently a front-end interaction only; it does not persist or send email addresses. No payment, ordering, or real fulfilment is implied by this visual rebuild.
+
+## Voice concierge (Gemini Live API)
+
+Pâtissö includes a browser-based voice concierge prototype powered by Gemini Live API.
+
+- The browser requests microphone permission only after the visitor starts a call.
+- A server route provisions a short-lived, single-use Gemini token; the permanent API key is never sent to the browser.
+- The live connection is constrained to the audio model and audio responses.
+- The assistant is instructed to describe this as a simulated portfolio demo. It must not claim that real food, payment or fulfilment is available.
+- Voice access requires a Google AI Studio API key in the server-only \`GEMINI_API_KEY\` environment variable. Do not add a billing account or upgrade the project. If the free-tier quota is unavailable or exhausted, the voice call should fail gracefully.
+
+Add \`GEMINI_API_KEY\` to your local \`.env.local\` or the Vercel project's Environment Variables, then redeploy. Never commit the key.
+
+The current voice milestone establishes the live call interface and audio transport. Menu-aware answers, cart actions and simulated order placement are subsequent milestones.
