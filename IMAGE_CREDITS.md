@@ -9,7 +9,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Fettuccine Alfredo** — [Fettuccine Alfredo.jpg](https://commons.wikimedia.org/wiki/File:Fettuccine_Alfredo.jpg)
 - **House Lasagna** — [Lasagna bolognese.jpg](https://commons.wikimedia.org/wiki/File:Lasagna_bolognese.jpg)
 - **Basil Pesto Fusilli** — [Pasta al pesto con fagiolini e patate.jpg](https://commons.wikimedia.org/wiki/File:Pasta_al_pesto_con_fagiolini_e_patate.jpg) — M&A, CC BY-SA 4.0. This Commons file is categorised under both pesto pasta and fusilli dishes.
-- **Mushroom Tagliatelle** — [Pasta with cream tuffle and mushrooms in Savour Cafe.jpg](https://commons.wikimedia.org/wiki/File:Pasta_with_cream_tuffle_and_mushrooms_in_Savour_Cafe.jpg)
+- **Mushroom Tagliatelle** — [Mushroom tagliatelle at Japanese Italia-inspired family restaurant.jpg](https://commons.wikimedia.org/wiki/File:Mushroom_tagliatelle_at_Japanese_Italia-inspired_family_restaurant.jpg) — Syced, CC0 1.0 (public-domain dedication).
 - **Tomato Basil Spaghetti** — [Spaghetti al Pomodoro.JPG](https://commons.wikimedia.org/wiki/File:Spaghetti_al_Pomodoro.JPG)
 - **Creamy Garlic Penne** — [Creamy white sauce penne pasta.jpg](https://commons.wikimedia.org/wiki/File:Creamy_white_sauce_penne_pasta.jpg) — Alnitak-Alnilam-Mintaka, CC BY-SA 4.0.
 - **Spaghetti Pomodoro** — [Spaghetti e pomodoro.jpg](https://commons.wikimedia.org/wiki/File:Spaghetti_e_pomodoro.jpg)
