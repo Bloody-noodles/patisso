@@ -39,6 +39,8 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   expect(imageAudit.filter(image => !image.alt.trim())).toEqual([]);
   expect(await page.locator(".food-card").count()).toBe(36);
   expect(await page.locator(".food-card img").count()).toBe(36);
+  const foodImageSources = await page.locator(".food-card img").evaluateAll(images => images.map(image => (image as HTMLImageElement).currentSrc));
+  expect(new Set(foodImageSources).size).toBe(36);
 
   const expectedLinks = [
     'a[href^="https://www.instagram.com/rigid_mayor"]',
