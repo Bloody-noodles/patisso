@@ -92,6 +92,8 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
   await expect(page.locator(".site-nav")).toBeVisible();
+  const mobileNavFits = await page.locator(".site-nav").evaluate(element => element.scrollWidth <= element.clientWidth + 1);
+  expect(mobileNavFits).toBe(true);
   const mobileGridColumns = await page.locator(".food-gallery").first().evaluate(element => getComputedStyle(element).gridTemplateColumns.split(" ").length);
   expect(mobileGridColumns).toBe(2);
   const mobileA11y = await new AxeBuilder({ page })
