@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { formatTsh, menuForAssistant, menuItems } from "@/lib/menu";
 import { loadDemoOrders, saveDemoOrder, type DemoOrder } from "@/lib/demo-orders";
 
-type CallStatus = "idle" | "connecting" | "listening" | "error";
+type CallStatus = "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
 type TranscriptLine = { role: "you" | "patisso"; text: string };
 
 const LIVE_MODEL = "models/gemini-3.1-flash-live-preview";
@@ -84,6 +84,10 @@ export function VoiceConcierge() {
   const [error, setError] = useState("");
   const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
   const [demoOrderSaved, setDemoOrderSaved] = useState(false);
+  const [voiceLevel, setVoiceLevel] = useState(0);
+  const panelRef = useRef<HTMLElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const inputAnalyserRef = useRef<AnalyserNode | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const inputContextRef = useRef<AudioContext | null>(null);
@@ -99,6 +103,12 @@ export function VoiceConcierge() {
   const stopCall = useCallback(() => {
     callAttemptRef.current += 1;
     closedByUserRef.current = true;
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    inputAnalyserRef.current = null;
+    setVoiceLevel(0);
     if (connectionTimerRef.current) {
       clearTimeout(connectionTimerRef.current);
       connectionTimerRef.current = null;
@@ -318,11 +328,28 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 },
               }));
             };
-            source.connect(processor);
+            const analyser = inputContext.createAnalyser();
+            analyser.fftSize = 256;
+            inputAnalyserRef.current = analyser;
+            source.connect(analyser);
+            analyser.connect(processor);
             const silentGain = inputContext.createGain();
             silentGain.gain.value = 0;
             processor.connect(silentGain);
             silentGain.connect(inputContext.destination);
+            const samples = new Uint8Array(analyser.fftSize);
+            const animateLevel = () => {
+              if (!isCurrentAttempt() || !inputAnalyserRef.current) return;
+              analyser.getByteTimeDomainData(samples);
+              let energy = 0;
+              for (let index = 0; index < samples.length; index += 1) {
+                const normalized = (samples[index] - 128) / 128;
+                energy += normalized * normalized;
+              }
+              setVoiceLevel(Math.min(1, Math.sqrt(energy / samples.length) * 4.5));
+              animationFrameRef.current = window.requestAnimationFrame(animateLevel);
+            };
+            animationFrameRef.current = window.requestAnimationFrame(animateLevel);
             setStatus("listening");
           }
 
@@ -373,16 +400,23 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
           const content = message.serverContent;
           if (content?.inputTranscription?.text) {
             const text = content.inputTranscription.text.trim();
-            if (text) setTranscript((current) => [...current, { role: "you" as const, text }].slice(-12));
+            if (text) {
+              setTranscript((current) => [...current, { role: "you" as const, text }].slice(-12));
+              setStatus("thinking");
+            }
           }
           if (content?.outputTranscription?.text) {
             const text = content.outputTranscription.text.trim();
-            if (text) setTranscript((current) => [...current, { role: "patisso" as const, text }].slice(-12));
+            if (text) {
+              setTranscript((current) => [...current, { role: "patisso" as const, text }].slice(-12));
+              setStatus("speaking");
+            }
           }
           if (content?.interrupted) {
             playbackSourcesRef.current.forEach((source) => { try { source.stop(); } catch { /* already stopped */ } });
             playbackSourcesRef.current.clear();
             nextPlaybackTimeRef.current = outputContext.currentTime;
+            if (isCurrentAttempt()) setStatus("listening");
           }
 
           for (const part of content?.modelTurn?.parts ?? []) {
@@ -404,6 +438,11 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
             source.onended = () => playbackSourcesRef.current.delete(source);
             const startAt = Math.max(audioContext.currentTime + 0.02, nextPlaybackTimeRef.current);
             source.start(startAt);
+            setStatus("speaking");
+            source.onended = () => {
+              playbackSourcesRef.current.delete(source);
+              if (isCurrentAttempt() && playbackSourcesRef.current.size === 0) setStatus("listening");
+            };
             nextPlaybackTimeRef.current = startAt + buffer.duration;
           }
         } catch (caught) {
@@ -449,20 +488,31 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
       </button>
 
       {open && (
-        <div className="voice-backdrop" role="presentation" onMouseDown={(event) => {
+        <div className="voice-backdrop" role="presentation" onKeyDown={(event) => {
+          if (event.key === "Escape" && status !== "connecting") { stopCall(); setOpen(false); }
+          if (event.key === "Tab" && panelRef.current) {
+            const focusable = Array.from(panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'));
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+          }
+        }} onMouseDown={(event) => {
           if (event.target === event.currentTarget && status !== "connecting" && status !== "listening") setOpen(false);
         }}>
-          <section className="voice-panel" role="dialog" aria-modal="true" aria-labelledby="voice-title">
+          <section ref={panelRef} className="voice-panel" role="dialog" aria-modal="true" aria-labelledby="voice-title" aria-describedby="voice-description">
             <button className="voice-close" type="button" aria-label="Close voice assistant" onClick={() => {
               stopCall();
               setOpen(false);
             }}>×</button>
             <p className="voice-kicker">THE PÂTISSÖ TABLE</p>
             <h2 id="voice-title">A little chat<br /><em>over good food.</em></h2>
-            <p className="voice-intro">Talk to our voice concierge. Ask about the menu, get ideas and explore the Pâtissö experience.</p>
-            <div className={"voice-orb voice-orb--" + status} aria-hidden="true"><span /><i /><b /></div>
+            <p id="voice-description" className="voice-intro">Talk to our voice concierge. Ask about the menu, get ideas and explore the Pâtissö experience.</p>
+            <div className={"voice-orb voice-orb--" + status} style={{ "--voice-level": voiceLevel } as React.CSSProperties} aria-hidden="true"><span /><i /><b /></div>
+            <div className={"voice-visualizer voice-visualizer--" + status} aria-hidden="true">{Array.from({ length: 21 }, (_, index) => <i key={index} style={{ "--bar": 0.35 + ((index * 7) % 9) / 10, "--voice-level": voiceLevel } as React.CSSProperties} />)}</div>
             <p className="voice-status" aria-live="polite">
-              {status === "connecting" ? "Connecting to Pâtissö…" : status === "listening" ? "You're connected. Go ahead." : status === "error" ? "Call unavailable" : "Ready when you are"}
+              {status === "connecting" ? "Connecting to Pâtissö…" : status === "listening" ? "Listening · Your turn" : status === "thinking" ? "One moment · Thinking" : status === "speaking" ? "Pâtissö is speaking" : status === "error" ? "Call unavailable" : "Ready when you are"}
             </p>
             {error && <p className="voice-error" role="alert">{error}</p>}
             <div className="voice-transcript" aria-live="polite">
