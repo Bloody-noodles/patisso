@@ -50,6 +50,18 @@ button { cursor: pointer; }
 .garnish-pepper { top: 24%; left: 45%; font-size: 1.8rem; color: #d49b36; animation-delay: -3s; }
 .hero-scroll { position: absolute; left: var(--gutter); bottom: 22px; display: flex; align-items: center; gap: 14px; color: #9a978e; font-size: .52rem; font-weight: 700; letter-spacing: .13em; }
 .hero-scroll span { color: var(--tomato); font-size: 1rem; }
+.pasta-gallery { padding: 70px var(--gutter) 84px; background: #fbfaf7; }
+.pasta-gallery-heading { text-align: center; margin-bottom: 32px; }
+.pasta-gallery-heading .eyebrow { justify-content: center; }
+.pasta-gallery-heading h2 { margin: 16px 0 8px; font-family: var(--serif); font-size: clamp(2.8rem, 4.8vw, 4.5rem); letter-spacing: -.06em; }
+.pasta-gallery-heading h2 em { color: var(--tomato); font-weight: 500; }
+.pasta-gallery-heading > p:last-child { margin: 0; color: var(--muted); font-size: .8rem; }
+.pasta-gallery-grid { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 18px; align-items: stretch; }
+.pasta-gallery-card { min-width: 0; height: 260px; margin: 0; position: relative; overflow: hidden; border-radius: 48% 48% 8px 8px; background: #e8e3d8; }
+.pasta-gallery-card--wide { height: 320px; border-radius: 8px 8px 48% 8px; }
+.pasta-gallery-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.pasta-gallery-card:hover img { transform: scale(1.07); }
+.pasta-gallery-card figcaption { position: absolute; left: 15px; bottom: 15px; padding: 9px 12px; background: #fffdf0e8; color: var(--ink); font-size: .53rem; font-weight: 800; letter-spacing: .13em; }
 .menu-section { min-height: 850px; position: relative; padding: 80px var(--gutter) 66px; overflow: hidden; background: #f1f0eb; background-image: radial-gradient(ellipse at 50% 0%, #fffefa 0, transparent 66%), repeating-linear-gradient(171deg, transparent 0 52px, #d9d6cd20 53px, transparent 55px); }
 .section-heading { position: relative; z-index: 2; text-align: center; }
 .section-heading .eyebrow { justify-content: center; }
@@ -148,6 +160,10 @@ button { cursor: pointer; }
   .garnish-leaf { left: 7%; bottom: 12%; }
   .garnish-pepper { top: 42%; left: 2%; }
   .hero-scroll { bottom: 20px; }
+  .pasta-gallery { padding: 55px var(--gutter) 62px; }
+  .pasta-gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pasta-gallery-card, .pasta-gallery-card--wide { height: 190px; border-radius: 8px 8px 35% 8px; }
+  .pasta-gallery-card--wide { grid-column: 1 / -1; height: 230px; }
   .menu-section { min-height: auto; padding: 68px var(--gutter) 50px; }
   .section-heading h2 { font-size: clamp(2.6rem, 10vw, 4rem); }
   .category-tabs { flex-wrap: wrap; }

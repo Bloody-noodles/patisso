@@ -8,6 +8,10 @@ const dishes = [
   { name: "Penne Arrabbiata", category: "Pasta", description: "Tomato, garlic, olive oil and a slow-building chilli warmth.", image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=88", tag: "A LITTLE FIRE" },
   { name: "Fettuccine Alfredo", category: "Pasta", description: "Wide ribbons folded through a velvety parmesan cream.", image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=88", tag: "CREAMY COMFORT" },
   { name: "House Lasagna", category: "Pasta", description: "Tender layers, slow-cooked ragù and a golden top.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=900&q=88", tag: "LAYER BY LAYER" },
+  { name: "Basil Pesto Fusilli", category: "Pasta", description: "Corkscrew pasta tossed in fragrant basil pesto and parmesan.", image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=88", tag: "FRESH & FRAGRANT" },
+  { name: "Creamy Mushroom Tagliatelle", category: "Pasta", description: "Silky ribbons with golden mushrooms, herbs and parmesan.", image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=88", tag: "A RICHER RIBBON" },
+  { name: "Tomato Basil Spaghetti", category: "Pasta", description: "A bright tomato sauce, fresh basil and a generous twirl.", image: "https://images.unsplash.com/photo-1555949258-eb67b1ef0e?auto=format&fit=crop&w=900&q=88", tag: "SIMPLE. BEAUTIFUL." },
+  { name: "Creamy Garlic Penne", category: "Pasta", description: "Penne in a mellow garlic cream with a parmesan finish.", image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=88", tag: "COMFORT IN EVERY BITE" },
   { name: "Cheeseburger", category: "Savoury", description: "A juicy, satisfying classic with all the right things.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88", tag: "THE CROWD-PLEASER" },
   { name: "Golden Fries", category: "Savoury", description: "Crisp edges, fluffy centres, made for sharing.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=88", tag: "GOLDEN & CRISP" },
   { name: "Macaroni & Cheese", category: "Savoury", description: "Comforting macaroni tucked into a rich, creamy cheese sauce.", image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=900&q=88", tag: "CHEESY COMFORT" },
@@ -76,6 +80,28 @@ export function ReferenceHome() {
         <span className="floating-garnish garnish-leaf" aria-hidden="true">✿</span>
         <span className="floating-garnish garnish-pepper" aria-hidden="true">✳</span>
         <div className="hero-scroll">SCROLL TO GET A TASTE <span>↓</span></div>
+      </section>
+
+      <section className="pasta-gallery" aria-label="A closer look at our pasta">
+        <div className="pasta-gallery-heading">
+          <p className="eyebrow"><span className="eyebrow-dot" /> OUR MAIN CHARACTER</p>
+          <h2>Made for the <em>pasta</em> people.</h2>
+          <p>Eight pasta favourites. Countless reasons to twirl.</p>
+        </div>
+        <div className="pasta-gallery-grid">
+          <figure className="pasta-gallery-card pasta-gallery-card--wide">
+            <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=1100&q=90" alt="Fresh pasta served with herbs" loading="lazy" />
+            <figcaption>THE PERFECT TWIRL</figcaption>
+          </figure>
+          <figure className="pasta-gallery-card">
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=90" alt="Penne pasta with tomato and herbs" loading="lazy" />
+            <figcaption>A LITTLE FIRE</figcaption>
+          </figure>
+          <figure className="pasta-gallery-card">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=90" alt="Creamy pasta in a bowl" loading="lazy" />
+            <figcaption>CREAMY COMFORT</figcaption>
+          </figure>
+        </div>
       </section>
 
       <section className="menu-section" id="menu" aria-labelledby="menu-title">
