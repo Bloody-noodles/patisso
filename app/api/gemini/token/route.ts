@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const LIVE_MODEL = "models/gemini-3.1-flash-live-preview";
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS = 5;
 const requests = new Map<string, { count: number; resetAt: number }>();
@@ -41,22 +40,22 @@ export async function POST(request: Request) {
   try {
     const expireTime = new Date(now + 15 * 60 * 1000).toISOString();
     const newSessionExpireTime = new Date(now + 60 * 1000).toISOString();
-    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
+
+    // Ephemeral Auth Tokens are currently served on v1alpha. The REST
+    // CreateAuthTokenRequest expects the AuthToken resource under authToken.
+    // Leave bidiGenerateContentSetup unset so the browser can send its setup
+    // message (model, voice, system instruction and audio modalities).
+    const response = await fetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-goog-api-key": apiKey,
       },
       body: JSON.stringify({
-        uses: 1,
-        expireTime,
-        newSessionExpireTime,
-        liveConnectConstraints: {
-          model: LIVE_MODEL,
-          config: {
-            responseModalities: ["AUDIO"],
-            sessionResumption: {},
-          },
+        authToken: {
+          uses: 1,
+          expireTime,
+          newSessionExpireTime,
         },
       }),
       cache: "no-store",
