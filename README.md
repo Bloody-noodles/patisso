@@ -60,6 +60,18 @@ Open http://localhost:3000.
 3. **Ordering experience:** menu data, cart, AI text and voice ordering.
 4. **Operations:** checkout, persistence, order tracking and admin tools.
 
-## Current status
+## Milestone status
 
-Initial Next.js foundation and responsive editorial landing-page structure. The hero still uses a temporary photographic placeholder; the final pasta animation and food imagery are part of Phase 01.
+### Milestone 01 — Brand experience and cinematic hero
+
+- [x] Establish wine-red and light-sand design tokens.
+- [x] Establish bold grotesque display typography with an editorial serif contrast.
+- [x] Build responsive brand navigation and a responsive hero composition.
+- [x] Add an animated pasta/fork line-art gesture and motion-aware entrance sequence.
+- [x] Add a reduced-motion fallback.
+- [ ] Replace the temporary hero photograph with approved final cinematic food media.
+- [ ] Run CI build, lint, accessibility and responsive visual checks before milestone sign-off.
+
+**Status:** implementation in progress; visual media approval and automated verification remain open.
+
+The hero currently uses a temporary remote photograph and an original SVG/CSS motion treatment. The final cinematic fork-to-plate footage or image sequence is a separate asset decision, not represented as completed.
