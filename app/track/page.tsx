@@ -35,7 +35,7 @@ export default function TrackDemoOrderPage() {
         {order && (
           <section className="track-receipt" aria-live="polite">
             <div className="track-receipt-top"><span>DEMO ORDER FOUND</span><b>#{order.reference}</b></div>
-            <div className="track-status"><span className="track-status-dot" /> Demo order confirmed</div>
+            <div className="track-status"><span className="track-status-dot" /> {order.status === "confirmed" ? "Demo order confirmed" : order.status === "completed" ? "Demo order marked complete" : "Demo order cancelled"}</div>
             <p className="track-created">Created {new Date(order.createdAt).toLocaleString()}</p>
             <ul>
               {order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>)}
