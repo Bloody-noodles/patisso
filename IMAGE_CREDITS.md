@@ -25,7 +25,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Garden Salad** — [Garden salad.jpg](https://commons.wikimedia.org/wiki/File:Garden_salad.jpg)
 - **Double Smash Burger** — [Smashburger.jpg](https://commons.wikimedia.org/wiki/File:Smashburger.jpg)
 - **Loaded Cheese Fries** — [Cheese Fries.jpg](https://commons.wikimedia.org/wiki/File:Cheese_Fries.jpg)
-- **Chicken Nuggets** — [Crispy Fried Chicken Strips.jpg](https://commons.wikimedia.org/wiki/File:Crispy_Fried_Chicken_Strips.jpg)
+- **Chicken Nuggets** — [Chicken nuggets.jpg](https://commons.wikimedia.org/wiki/File:Chicken_nuggets.jpg)
 - **Grilled Chicken Salad** — [Grilled Chicken Fattoush Salad.jpg](https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Fattoush_Salad.jpg)
 
 ## Bakery & sweets
