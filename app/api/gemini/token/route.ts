@@ -41,10 +41,8 @@ export async function POST(request: Request) {
     const expireTime = new Date(now + 15 * 60 * 1000).toISOString();
     const newSessionExpireTime = new Date(now + 60 * 1000).toISOString();
 
-    // Ephemeral Auth Tokens are currently served on v1alpha. The REST
-    // CreateAuthTokenRequest expects the AuthToken resource under authToken.
-    // Leave bidiGenerateContentSetup unset so the browser can send its setup
-    // message (model, voice, system instruction and audio modalities).
+    // The v1alpha AuthTokenService endpoint accepts the AuthToken resource
+    // directly. Live setup is sent by the browser after the WebSocket opens.
     const response = await fetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
       method: "POST",
       headers: {
@@ -52,11 +50,9 @@ export async function POST(request: Request) {
         "x-goog-api-key": apiKey,
       },
       body: JSON.stringify({
-        authToken: {
-          uses: 1,
-          expireTime,
-          newSessionExpireTime,
-        },
+        uses: 1,
+        expireTime,
+        newSessionExpireTime,
       }),
       cache: "no-store",
     });
@@ -70,7 +66,6 @@ export async function POST(request: Request) {
       } catch {
         if (responseText) providerMessage = responseText.slice(0, 500);
       }
-      // Log only Google's response status/message. Never log the API key or request headers.
       console.error("[Gemini token] Provider rejected session request:", response.status, providerMessage);
       return NextResponse.json(
         { error: `Gemini rejected the voice-session request (HTTP ${response.status}): ${providerMessage}` },
