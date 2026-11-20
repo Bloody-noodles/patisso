@@ -70,8 +70,18 @@ Open http://localhost:3000.
 - [x] Add an animated pasta/fork line-art gesture and motion-aware entrance sequence.
 - [x] Add a reduced-motion fallback.
 - [ ] Replace the temporary hero photograph with approved final cinematic food media.
-- [ ] Run CI build, lint, accessibility and responsive visual checks before milestone sign-off.
+- [x] GitHub Actions quality workflow passed (lint and production build).
 
-**Status:** implementation in progress; visual media approval and automated verification remain open.
+**Status:** automated quality check passed; final cinematic media and responsive visual review remain open.
 
-The hero currently uses a temporary remote photograph and an original SVG/CSS motion treatment. The final cinematic fork-to-plate footage or image sequence is a separate asset decision, not represented as completed.
+### Milestone 02 — The pasta collection
+
+- [x] Establish a pasta-first editorial collection section.
+- [x] Create four image-led pasta showcases with varied compositions.
+- [x] Preserve pasta as the dominant food story.
+- [ ] Verify image selection and visual crop on desktop and mobile.
+- [ ] Run lint and production build after implementation.
+
+**Status:** first implementation pushed; visual review and CI verification pending.
+
+The hero currently uses a temporary remote photograph and an original SVG/CSS motion treatment. The final cinematic fork-to-plate footage or image sequence is a separate asset decision, not represented as completed. Pasta dish imagery and descriptions are editorial concept content pending confirmation against the final restaurant menu.
