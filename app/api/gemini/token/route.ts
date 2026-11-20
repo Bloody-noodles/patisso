@@ -63,14 +63,25 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
+      const responseText = await response.text();
+      let providerMessage = "Google did not provide an error description.";
+      try {
+        const providerBody = JSON.parse(responseText) as { error?: { message?: string; status?: string } };
+        providerMessage = providerBody.error?.message || providerBody.error?.status || providerMessage;
+      } catch {
+        if (responseText) providerMessage = responseText.slice(0, 500);
+      }
+      // Log only Google's response status/message. Never log the API key or request headers.
+      console.error("[Gemini token] Provider rejected session request:", response.status, providerMessage);
       return NextResponse.json(
-        { error: "Gemini could not issue a voice session. Check the API key and free-tier model access." },
+        { error: `Gemini rejected the voice-session request (HTTP ${response.status}): ${providerMessage}` },
         { status: 502 },
       );
     }
 
     const data = (await response.json()) as { name?: string };
     if (!data.name) {
+      console.error("[Gemini token] Provider returned success without a token name.");
       return NextResponse.json({ error: "Gemini returned an invalid voice session." }, { status: 502 });
     }
 
@@ -78,7 +89,9 @@ export async function POST(request: Request) {
       { token: data.name },
       { headers: { "Cache-Control": "no-store, max-age=0" } },
     );
-  } catch {
+  } catch (caught) {
+    const message = caught instanceof Error ? caught.message : "Unknown network error";
+    console.error("[Gemini token] Request failed:", message);
     return NextResponse.json(
       { error: "The voice service is temporarily unreachable. Please try again." },
       { status: 502 },
