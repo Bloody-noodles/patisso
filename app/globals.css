@@ -315,3 +315,14 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .voice-launcher:focus-visible,.voice-close:focus-visible,.voice-action:focus-visible{outline:3px solid var(--tomato);outline-offset:4px}
 @media(max-width:480px){.voice-panel{padding:38px 22px 24px}.voice-launcher{right:15px;bottom:15px;padding:12px 15px}.voice-orb{width:98px;height:98px}}
 @media(prefers-reduced-motion:reduce){.voice-orb span,.voice-orb i,.voice-orb b{animation:none!important}}
+
+
+/* Voice-led simulated order receipt */
+.voice-order{margin:0 0 15px;padding:15px 16px;border:1px solid #d9c9b9;border-radius:6px;background:#fffaf1;text-align:left;box-shadow:0 8px 22px #4a35200b}
+.voice-order-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:11px;border-bottom:1px solid #e8ded1;color:var(--tomato-contrast);font-size:.52rem;font-weight:900;letter-spacing:.12em}
+.voice-order-heading b{color:var(--ink);font-size:.63rem;letter-spacing:.04em}
+.voice-order ul{display:grid;gap:8px;margin:12px 0;padding:0;list-style:none}
+.voice-order li{display:flex;justify-content:space-between;gap:12px;color:var(--ink);font-size:.7rem;line-height:1.45}
+.voice-order li b{flex:0 0 auto;color:var(--tomato-contrast);font-size:.68rem}
+.voice-order-note{margin:10px 0 0;padding-top:9px;border-top:1px solid #e8ded1;color:var(--muted);font-size:.65rem;line-height:1.5}
+.voice-order-foot{margin:11px 0 0;color:#777064;font-size:.57rem;line-height:1.55}
