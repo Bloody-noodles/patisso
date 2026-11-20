@@ -10,9 +10,12 @@ const dishes = [
   { name: "House Lasagna", category: "Pasta", description: "Tender layers, slow-cooked ragù and a golden top.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=900&q=88", tag: "LAYER BY LAYER" },
   { name: "Cheeseburger", category: "Savoury", description: "A juicy, satisfying classic with all the right things.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88", tag: "THE CROWD-PLEASER" },
   { name: "Golden Fries", category: "Savoury", description: "Crisp edges, fluffy centres, made for sharing.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=88", tag: "GOLDEN & CRISP" },
+  { name: "Macaroni & Cheese", category: "Savoury", description: "Comforting macaroni tucked into a rich, creamy cheese sauce.", image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=900&q=88", tag: "CHEESY COMFORT" },
   { name: "Garden Salad", category: "Savoury", description: "Fresh greens, colour and a bright, lively finish.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=88", tag: "FRESH THINKING" },
   { name: "Chocolate Cake", category: "Bakery", description: "A soft, rich slice for the sweet-toothed.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=88", tag: "SAVE ROOM" },
   { name: "Doughnuts", category: "Bakery", description: "Little rings of happiness, finished with a sweet touch.", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=88", tag: "SOMETHING SWEET" },
+  { name: "Golden Meat Pie", category: "Bakery", description: "A flaky, golden pastry with a savoury, comforting centre.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484df?auto=format&fit=crop&w=900&q=88", tag: "BAKED WITH LOVE" },
+  { name: "Soft Buns", category: "Bakery", description: "Soft, pillowy bakery favourites for any time of day.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=88", tag: "FRESH FROM THE OVEN" },
 ];
 
 const categories = ["All", "Pasta", "Savoury", "Bakery"];
