@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { formatTsh } from "@/lib/menu";
 import { findDemoOrder, type DemoOrder } from "@/lib/demo-orders";
@@ -10,7 +10,7 @@ export default function TrackDemoOrderPage() {
   const [order, setOrder] = useState<DemoOrder | null>(null);
   const [searched, setSearched] = useState(false);
 
-  function trackOrder(event: React.FormEvent<HTMLFormElement>) {
+  function trackOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOrder(findDemoOrder(reference));
     setSearched(true);
