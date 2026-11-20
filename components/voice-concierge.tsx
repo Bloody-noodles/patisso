@@ -91,6 +91,7 @@ export function VoiceConcierge() {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const processorRef = useRef<ScriptProcessorNode | null>(null);
   const nextPlaybackTimeRef = useRef(0);
+  const playbackSourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
   const closedByUserRef = useRef(false);
 
   const stopCall = useCallback(() => {
@@ -100,6 +101,8 @@ export function VoiceConcierge() {
     if (socket && socket.readyState < WebSocket.CLOSING) socket.close(1000, "Call ended");
     processorRef.current?.disconnect();
     sourceRef.current?.disconnect();
+    playbackSourcesRef.current.forEach((source) => { try { source.stop(); } catch { /* already stopped */ } });
+    playbackSourcesRef.current.clear();
     processorRef.current = null;
     sourceRef.current = null;
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -277,7 +280,10 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
               }));
             };
             source.connect(processor);
-            processor.connect(inputContext.destination);
+            const silentGain = inputContext.createGain();
+            silentGain.gain.value = 0;
+            processor.connect(silentGain);
+            silentGain.connect(inputContext.destination);
             setStatus("listening");
           }
 
@@ -334,7 +340,11 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
             const text = content.outputTranscription.text.trim();
             if (text) setTranscript((current) => [...current, { role: "patisso" as const, text }].slice(-12));
           }
-          if (content?.interrupted) nextPlaybackTimeRef.current = outputContext.currentTime;
+          if (content?.interrupted) {
+            playbackSourcesRef.current.forEach((source) => { try { source.stop(); } catch { /* already stopped */ } });
+            playbackSourcesRef.current.clear();
+            nextPlaybackTimeRef.current = outputContext.currentTime;
+          }
 
           for (const part of content?.modelTurn?.parts ?? []) {
             const audioBase64 = part.inlineData?.data;
@@ -351,6 +361,8 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
             const source = audioContext.createBufferSource();
             source.buffer = buffer;
             source.connect(audioContext.destination);
+            playbackSourcesRef.current.add(source);
+            source.onended = () => playbackSourcesRef.current.delete(source);
             const startAt = Math.max(audioContext.currentTime + 0.02, nextPlaybackTimeRef.current);
             source.start(startAt);
             nextPlaybackTimeRef.current = startAt + buffer.duration;
@@ -371,7 +383,8 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
 
       socket.onclose = () => {
         if (!closedByUserRef.current) {
-          setError("The voice connection ended. You can try calling again.");
+          stopCall();
+          setError("The voice connection ended. Your microphone has been released. You can try calling again.");
           setStatus("error");
         }
       };
