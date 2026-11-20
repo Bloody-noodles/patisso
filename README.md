@@ -1,23 +1,16 @@
-# pitãssö
+# Pâtissö
 
-A pasta-led restaurant brand experience inspired by the supplied visual reference.
+A pasta-led, food-first restaurant brand and voice-ordering portfolio demo. It is an independent concept build, not a live restaurant.
 
-## Brand and content
+## Brand and visual direction
 
-- **Brand:** pitãssö
-- **Visual direction:** warm marble/paper texture, overhead food photography, floating garnish details, editorial serif headlines, tomato-orange accents, and spacious food-led compositions.
-- **Food emphasis:** pasta 50%; cheeseburgers 5%; fries 5%; macaroni 5%; salads 5%; cakes, doughnuts, meat pies, buns and other food 30%.
-- These percentages guide visual emphasis and content architecture, not a fixed number of dishes.
+- **Brand:** Pâtissö (repository/project slug: `patisso`)
+- **Palette:** wine red and light sand.
+- **Typography:** bold condensed display headings with an elegant editorial serif.
+- **Structure:** cinematic food hero, category overview, separate long-scroll galleries for Pasta, Savoury, Bakery & Sweets, and Drinks, editorial story, social CTA and footer.
+- **Catalogue:** 36 illustrative items across four categories, with Tanzanian Shilling prices and dish-matched photography.
 
-## Reference structure implemented
-
-1. Header and split editorial hero.
-2. Centred menu discovery section with category filters and a three-card carousel.
-3. Food-led brand/story feature.
-4. Centred newsletter sign-up treatment.
-5. Multi-column footer.
-
-The design follows the reference's layout language while retaining pitãssö's name and food offering hierarchy. Images, descriptions and TSh prices are illustrative portfolio-demo content, not an approved live restaurant menu or commercial price list.
+Images, descriptions and prices are illustrative portfolio-demo content, not an approved commercial menu or price list.
 
 ## Stack
 
@@ -25,6 +18,8 @@ The design follows the reference's layout language while retaining pitãssö's n
 - React 19
 - TypeScript
 - Custom responsive CSS
+- Gemini Live API for browser voice interaction
+- Browser local storage for simulated demo orders
 
 ## Local development
 
@@ -38,20 +33,32 @@ npm run dev
 ```bash
 npm run lint
 npm run build
+npm run test:e2e
 ```
 
-The newsletter form is currently a front-end interaction only; it does not persist or send email addresses. No payment, ordering, or real fulfilment is implied by this visual rebuild.
+The Playwright release suite checks desktop and mobile layout, all catalogue and overview images, alt text, external/footer links, accessibility, performance budgets, and the local order-console-to-tracking lifecycle.
 
-## Voice concierge (Gemini Live API)
+## Voice concierge
 
-Pâtissö includes a browser-based voice concierge prototype powered by Gemini Live API.
+Pâtissö includes a browser-based voice concierge powered by Gemini Live API.
 
 - The browser requests microphone permission only after the visitor starts a call.
-- A server route provisions a short-lived, single-use Gemini token; the permanent API key is never sent to the browser.
-- The live connection is constrained to the audio model and audio responses.
-- The assistant is instructed to describe this as a simulated portfolio demo. It must not claim that real food, payment or fulfilment is available.
-- Voice access requires a Google AI Studio API key in the server-only \`GEMINI_API_KEY\` environment variable. Do not add a billing account or upgrade the project. If the free-tier quota is unavailable or exhausted, the voice call should fail gracefully.
+- A server route provisions a short-lived, single-use Gemini token. The permanent API key remains server-side.
+- The assistant uses the shared catalogue for descriptions and prices; it must not invent ingredients, allergens, availability, opening hours or delivery promises.
+- The assistant must read back the complete order and total, then obtain explicit visitor confirmation before the order tool accepts it.
+- Audio interruptions stop scheduled playback, and unexpected socket disconnects release microphone/audio resources.
+- Voice access requires a Google AI Studio API key in the server-only `GEMINI_API_KEY` environment variable. The current project has this configured in Production. Do not add billing or upgrade the project. Free-tier quota can be exhausted or unavailable.
 
-Add \`GEMINI_API_KEY\` to your local \`.env.local\` or the Vercel project's Environment Variables, then redeploy. Never commit the key.
+## Simulated order lifecycle
 
-The voice concierge and food galleries use one shared catalogue containing food, drinks, descriptions and illustrative Tanzanian Shilling (TSh) prices. Gemini Live can recommend a drink to accompany a meal, but must only use the supplied catalogue. After the visitor has heard the item, quantity, unit price, line total and grand total read-back and explicitly confirmed, the app validates the order and calculates the authoritative total from the catalogue. A demo receipt/reference is saved in browser local storage and can be looked up on the `/track` page in the same browser and device. The `/demo-console` page provides a local-only order-management view with confirmed, completed and cancelled states. Both tracking and the console read the same browser storage. This is not a server-side database: clearing browser storage or switching devices removes access to the record, and the console is not a secured production admin system. Cross-device persistence and authenticated admin access require a separately provisioned database/auth service; no paid service is enabled or assumed. No payment, restaurant notification, kitchen processing, delivery or real fulfilment takes place.
+- The assistant validates exact menu items and quantities, calculates authoritative line totals and grand total, and creates a simulated order reference.
+- `/track` looks up the order and displays its current local status.
+- `/demo-console` lists local demo orders, supports search and status changes (confirmed, completed, cancelled), and exports the currently filtered orders as CSV.
+- The console and tracking page share the same browser storage; status changes are reflected in other open tabs.
+- If browser storage is unavailable, the voice receipt remains visible for the current session but the app does not claim that tracking was saved.
+
+**Important limitation:** this is browser-local storage, not a server-side database. Orders do not sync across devices or browsers, can be lost when site data is cleared, and the demo console is not an authenticated production admin system. Cross-device persistence and secure admin access require a separately provisioned database and authentication service. No paid database or storage service has been provisioned.
+
+## No real restaurant operations
+
+Pâtissö has no physical kitchen. No payment is taken, no restaurant is notified, no kitchen ticket is created, and no food is prepared or delivered. All ordering and tracking is simulated for portfolio demonstration only.
