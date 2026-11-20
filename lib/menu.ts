@@ -1,4 +1,4 @@
-"export const menuGroups = [
+export const menuGroups = [
   {
     id: "pasta",
     label: "THE MAIN EVENT",
