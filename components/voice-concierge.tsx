@@ -93,9 +93,16 @@ export function VoiceConcierge() {
   const nextPlaybackTimeRef = useRef(0);
   const playbackSourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
   const closedByUserRef = useRef(false);
+  const callAttemptRef = useRef(0);
+  const connectionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const stopCall = useCallback(() => {
+    callAttemptRef.current += 1;
     closedByUserRef.current = true;
+    if (connectionTimerRef.current) {
+      clearTimeout(connectionTimerRef.current);
+      connectionTimerRef.current = null;
+    }
     const socket = socketRef.current;
     socketRef.current = null;
     if (socket && socket.readyState < WebSocket.CLOSING) socket.close(1000, "Call ended");
@@ -144,6 +151,8 @@ export function VoiceConcierge() {
     setError("");
     setStatus("connecting");
     closedByUserRef.current = false;
+    const attempt = ++callAttemptRef.current;
+    const isCurrentAttempt = () => callAttemptRef.current === attempt && !closedByUserRef.current;
 
     try {
       if (!navigator.mediaDevices?.getUserMedia) {
@@ -153,6 +162,10 @@ export function VoiceConcierge() {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true },
       });
+      if (!isCurrentAttempt()) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
       streamRef.current = stream;
 
       const tokenResponse = await fetch("/api/gemini/token", {
@@ -161,6 +174,7 @@ export function VoiceConcierge() {
         cache: "no-store",
       });
       const tokenData = (await tokenResponse.json()) as { token?: string; error?: string };
+      if (!isCurrentAttempt()) return;
       if (!tokenResponse.ok || !tokenData.token) {
         throw new Error(tokenData.error || "The voice assistant is not configured yet.");
       }
@@ -170,11 +184,29 @@ export function VoiceConcierge() {
       inputContextRef.current = inputContext;
       outputContextRef.current = outputContext;
       await Promise.all([inputContext.resume(), outputContext.resume()]);
+      if (!isCurrentAttempt()) {
+        await Promise.all([inputContext.close(), outputContext.close()]);
+        return;
+      }
 
       const socket = new WebSocket(LIVE_SOCKET + encodeURIComponent(tokenData.token));
       socketRef.current = socket;
+      connectionTimerRef.current = setTimeout(() => {
+        if (!isCurrentAttempt() || socket.readyState === WebSocket.OPEN) return;
+        setError("The voice service took too long to connect. Check your connection and try again.");
+        stopCall();
+        setStatus("error");
+      }, 20000);
 
       socket.onopen = () => {
+        if (!isCurrentAttempt()) {
+          socket.close(1000, "Call no longer active");
+          return;
+        }
+        if (connectionTimerRef.current) {
+          clearTimeout(connectionTimerRef.current);
+          connectionTimerRef.current = null;
+        }
         socket.send(JSON.stringify({
           setup: {
             model: LIVE_MODEL,
@@ -243,6 +275,7 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
       };
 
       socket.onmessage = async (event) => {
+        if (!isCurrentAttempt()) return;
         try {
           const payload = event.data instanceof Blob
             ? await event.data.text()
@@ -382,19 +415,25 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
       };
 
       socket.onerror = () => {
+        if (!isCurrentAttempt()) return;
         setError("We couldn't connect to the voice service. Please try again.");
         stopCall();
         setStatus("error");
       };
 
       socket.onclose = () => {
-        if (!closedByUserRef.current) {
+        if (connectionTimerRef.current) {
+          clearTimeout(connectionTimerRef.current);
+          connectionTimerRef.current = null;
+        }
+        if (isCurrentAttempt()) {
           stopCall();
           setError("The voice connection ended. Your microphone has been released. You can try calling again.");
           setStatus("error");
         }
       };
     } catch (caught) {
+      if (!isCurrentAttempt()) return;
       const messageText = caught instanceof Error ? caught.message : "Something went wrong starting the call.";
       setError(messageText);
       stopCall();
