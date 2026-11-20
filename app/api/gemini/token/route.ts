@@ -15,15 +15,18 @@ export async function POST(request: Request) {
   }
 
   const now = Date.now();
+  if (requests.size > 2_000) {
+    for (const [key, entry] of requests) if (entry.resetAt <= now) requests.delete(key);
+  }
   const forwardedFor = request.headers.get("x-forwarded-for");
-  const clientKey = forwardedFor?.split(",")[0]?.trim() || "unknown";
+  const clientKey = request.headers.get("x-real-ip") || forwardedFor?.split(",")[0]?.trim() || "unknown";
   const existing = requests.get(clientKey);
   if (!existing || existing.resetAt <= now) {
     requests.set(clientKey, { count: 1, resetAt: now + WINDOW_MS });
   } else if (existing.count >= MAX_REQUESTS) {
     return NextResponse.json(
       { error: "Too many call attempts. Please wait a few minutes and try again." },
-      { status: 429, headers: { "Retry-After": String(Math.ceil((existing.resetAt - now) / 1000)) } },
+      { status: 429, headers: { "Retry-After": String(Math.ceil((existing.resetAt - now) / 1000)), "Cache-Control": "no-store" } },
     );
   } else {
     existing.count += 1;
