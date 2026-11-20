@@ -7,7 +7,7 @@ const groups = [
 ["Penne Arrabbiata","Tomato, garlic, olive oil and a little chilli warmth.","https://commons.wikimedia.org/wiki/Special:FilePath/Penne%20Arrabbiata.jpg?width=1200"],
 ["Fettuccine Alfredo","Wide ribbons folded through velvety parmesan cream.","https://commons.wikimedia.org/wiki/Special:FilePath/Fettuccine%20Alfredo.jpg?width=1200"],
 ["House Lasagna","Tender layers, slow-cooked ragù and a golden top.","https://commons.wikimedia.org/wiki/Special:FilePath/Lasagna%20bolognese.jpg?width=1200"],
-["Basil Pesto Fusilli","Fusilli pasta tossed in fragrant basil pesto.","https://snapcalorie-webflow-website.s3.us-east-2.amazonaws.com/media/food_pics_v2/medium/fusilli_pesto.jpg"],
+["Basil Pesto Fusilli","Fusilli pasta tossed in fragrant basil pesto.","https://commons.wikimedia.org/wiki/Special:FilePath/Basil%20pesto%20pasta.jpg?width=1200"],
 ["Mushroom Tagliatelle","Silky ribbons with golden mushrooms and herbs.","https://commons.wikimedia.org/wiki/Special:FilePath/Pasta%20with%20cream%20truffle%20and%20mushrooms%20in%20Savour%20Cafe.jpg?width=1200"],
 ["Tomato Basil Spaghetti","Bright tomato sauce, fresh basil and a generous twirl.","https://commons.wikimedia.org/wiki/Special:FilePath/Spaghetti%20al%20Pomodoro.JPG?width=1200"],
 ["Creamy Garlic Penne","Penne in mellow garlic cream with parmesan.","https://commons.wikimedia.org/wiki/Special:FilePath/Pasta%20Penne.jpg?width=1200"],
@@ -27,7 +27,7 @@ const groups = [
 {id:"bakery",label:"A LITTLE SOMETHING SWEET",title:"Save room for dessert.",intro:"Fresh-from-the-oven comforts and sweet things worth slowing down for.",items:[
 ["Chocolate Cake","A soft, rich slice for the sweet-toothed.","https://commons.wikimedia.org/wiki/Special:FilePath/ChocolateCake.jpg?width=1200"],
 ["Doughnuts","Little rings of happiness, finished with a sweet touch.","https://commons.wikimedia.org/wiki/Special:FilePath/Donut%20assortment.jpg?width=1200"],
-["Golden Meat Pie","A flaky Nigerian meat pie with a savoury filling.","https://snapcalorie-webflow-website.s3.us-east-2.amazonaws.com/media/food_pics_v2/medium/nigerian_meat_pie.jpg"],
+["Golden Meat Pie","A flaky Nigerian meat pie with a savoury filling.","https://commons.wikimedia.org/wiki/Special:FilePath/Meat%20pie%20in%20Northern%20Nigeria.jpg?width=1200"],
 ["Soft Buns","Soft, pillowy bakery favourites for any time of day.","https://commons.wikimedia.org/wiki/Special:FilePath/Bun%20Bread.jpg?width=1200"],
 ["Strawberry Shortcake","Soft layers, fresh cream and bright strawberries.","https://commons.wikimedia.org/wiki/Special:FilePath/Strawberry%20shortcake.jpg?width=1200"],
 ["Glazed Bakery Doughnuts","A soft centre with a glossy sweet finish.","https://commons.wikimedia.org/wiki/Special:FilePath/Glazed%20doughnut.jpg?width=1200"],

@@ -8,7 +8,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Penne Arrabbiata** — [Penne Arrabbiata.jpg](https://commons.wikimedia.org/wiki/File:Penne_Arrabbiata.jpg)
 - **Fettuccine Alfredo** — [Fettuccine Alfredo.jpg](https://commons.wikimedia.org/wiki/File:Fettuccine_Alfredo.jpg)
 - **House Lasagna** — [Lasagna bolognese.jpg](https://commons.wikimedia.org/wiki/File:Lasagna_bolognese.jpg)
-- **Basil Pesto Fusilli** — [SnapCalorie image page](https://www.snapcalorie.com/nutrition/ja/fusilli_pesto_nutrition.html)
+- **Basil Pesto Fusilli** — [Basil pesto pasta.jpg](https://commons.wikimedia.org/wiki/File:Basil_pesto_pasta.jpg) — Shreya13jain, CC BY-SA 4.0.
 - **Mushroom Tagliatelle** — [Pasta with cream truffle and mushrooms in Savour Cafe.jpg](https://commons.wikimedia.org/wiki/File:Pasta_with_cream_truffle_and_mushrooms_in_Savour_Cafe.jpg)
 - **Tomato Basil Spaghetti** — [Spaghetti al Pomodoro.JPG](https://commons.wikimedia.org/wiki/File:Spaghetti_al_Pomodoro.JPG)
 - **Creamy Garlic Penne** — [Pasta Penne.jpg](https://commons.wikimedia.org/wiki/File:Pasta_Penne.jpg)
@@ -32,7 +32,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 
 - **Chocolate Cake** — [ChocolateCake.jpg](https://commons.wikimedia.org/wiki/File:ChocolateCake.jpg)
 - **Doughnuts** — [Donut assortment.jpg](https://commons.wikimedia.org/wiki/File:Donut_assortment.jpg)
-- **Golden Meat Pie** — [SnapCalorie Nigerian meat pie image page](https://www.snapcalorie.com/nutrition/nigerian_meat_pie_nutrition.html)
+- **Golden Meat Pie** — [Meat pie in Northern Nigeria.jpg](https://commons.wikimedia.org/wiki/File:Meat_pie_in_Northern_Nigeria.jpg) — Zahraswaty, CC BY-SA 4.0.
 - **Soft Buns** — [Bun Bread.jpg](https://commons.wikimedia.org/wiki/File:Bun_Bread.jpg)
 - **Strawberry Shortcake** — [Strawberry shortcake.jpg](https://commons.wikimedia.org/wiki/File:Strawberry_shortcake.jpg)
 - **Glazed Bakery Doughnuts** — [Glazed doughnut.jpg](https://commons.wikimedia.org/wiki/File:Glazed_doughnut.jpg)
@@ -48,5 +48,4 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 
 ## Targeted image-load repairs
 
-- Basil Pesto Fusilli: direct image asset hosted by SnapCalorie (`fusilli_pesto.jpg`).
-- Golden Meat Pie: direct image asset hosted by SnapCalorie (`nigerian_meat_pie.jpg`).
+- Both unavailable SnapCalorie-hosted image URLs were replaced with Wikimedia Commons file assets.
