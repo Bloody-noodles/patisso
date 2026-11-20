@@ -138,9 +138,19 @@ export function VoiceConcierge() {
         }));
       };
 
-      socket.onmessage = (event) => {
+      socket.onmessage = async (event) => {
         try {
-          const message = JSON.parse(String(event.data)) as {
+          // Browsers may expose a WebSocket frame as a Blob. String(Blob)
+          // produces "[object Blob]", which is not JSON; decode the frame first.
+          const payload = event.data instanceof Blob
+            ? await event.data.text()
+            : event.data instanceof ArrayBuffer
+              ? new TextDecoder().decode(event.data)
+              : typeof event.data === "string"
+                ? event.data
+                : null;
+          if (payload === null) throw new Error("The voice service sent an unsupported message format.");
+          const message = JSON.parse(payload) as {
             setupComplete?: unknown;
             serverContent?: {
               inputTranscription?: { text?: string };
