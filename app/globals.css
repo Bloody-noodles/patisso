@@ -418,3 +418,31 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 
 .track-status-dot--completed{background:#64845a;box-shadow:0 0 0 4px #64845a18}
 .track-status-dot--cancelled{background:#b84c40;box-shadow:0 0 0 4px #b84c4018}
+
+
+/* Voice concierge: audio-reactive feedback and accessible interaction states */
+.voice-visualizer{height:34px;display:flex;align-items:center;justify-content:center;gap:4px;margin:0 auto 9px}
+.voice-visualizer i{display:block;width:3px;height:calc(5px + (var(--bar) * 8px) + (var(--voice-level) * 17px));border-radius:99px;background:var(--tomato-contrast);opacity:.55;transform-origin:center;transition:height 90ms linear,opacity .2s ease}
+.voice-visualizer--connecting i{animation:voice-bar 1s ease-in-out infinite alternate}
+.voice-visualizer--connecting i:nth-child(3n){animation-delay:-.35s}
+.voice-visualizer--connecting i:nth-child(3n + 1){animation-delay:-.7s}
+.voice-visualizer--thinking i{animation:voice-think 1.25s ease-in-out infinite}
+.voice-visualizer--thinking i:nth-child(3n){animation-delay:.2s}
+.voice-visualizer--speaking i{opacity:1;box-shadow:0 0 9px #7f011f35}
+.voice-orb--listening b{transform:scale(calc(.9 + var(--voice-level) * .22))}
+.voice-orb--thinking span,.voice-orb--thinking i{animation:voice-pulse 2.2s ease-out infinite}
+.voice-orb--speaking b{animation:voice-core .45s ease-in-out infinite alternate}
+.voice-panel:focus{outline:none}
+.voice-close{display:grid;place-items:center;cursor:pointer;transition:background .2s ease,color .2s ease}
+.voice-close:hover{background:var(--tomato-contrast);color:#fff}
+.voice-action,.voice-launcher{cursor:pointer}
+.voice-action:disabled{opacity:.55;cursor:wait}
+.voice-status{min-height:1.2em}
+.voice-error{padding:9px 11px;border:1px solid #e8c8c0;border-radius:4px;background:#fff7f4}
+@keyframes voice-bar{from{transform:scaleY(.55);opacity:.4}to{transform:scaleY(1.35);opacity:1}}
+@keyframes voice-think{0%,100%{transform:scaleY(.45);opacity:.35}50%{transform:scaleY(1.1);opacity:.9}}
+@media(prefers-reduced-motion:reduce){
+  .voice-visualizer i,.voice-orb span,.voice-orb i,.voice-orb b{animation:none!important;transition:none!important}
+  .voice-orb--listening b{transform:none}
+  .voice-action,.voice-launcher,.voice-close{transition:none}
+}
