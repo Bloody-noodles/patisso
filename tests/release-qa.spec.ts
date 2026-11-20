@@ -134,13 +134,12 @@ test("local demo console updates the order status shown by tracking", async ({ p
   await page.addInitScript(() => {
     if (localStorage.getItem("patisso-demo-test-seeded")) return;
     localStorage.setItem("patisso-demo-test-seeded", "1");
-    localStorage.setItem("patisso-demo-orders-v2", JSON.stringify([{
+    localStorage.setItem("patisso-demo-orders-v1", JSON.stringify([{
       reference: "TEST1234",
       items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 18000, lineTotal: 36000 }],
       totalTsh: 36000,
       specialInstructions: "No extra chilli",
-      createdAt: "2026-11-20T12:00:00.000Z",
-      status: "confirmed"
+      createdAt: "2026-11-20T12:00:00.000Z"
     }]));
   });
 
