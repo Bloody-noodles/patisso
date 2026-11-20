@@ -1,5 +1,3 @@
-"use client";
-
 const pastaDishes = [
   {
     number: "01",
