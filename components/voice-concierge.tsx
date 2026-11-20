@@ -429,7 +429,7 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </ul>
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
-                {demoOrderSaved && {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}}
+                {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}
                 <p className="voice-order-foot">{demoOrderSaved ? "Saved in this browser only. Nothing has been sent to a restaurant." : "Temporary receipt only: browser storage was unavailable. Nothing has been sent to a restaurant."}</p>
               </section>
             )}
