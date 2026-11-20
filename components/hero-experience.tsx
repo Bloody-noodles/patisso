@@ -28,20 +28,15 @@ export function HeroExperience() {
         </div>
       </div>
 
-      <div className="hero__visual" aria-label="Slow-motion pasta being twirled and lifted on a fork">
-        <video
+      <div className="hero__visual" aria-label="Animated close-up of pasta being twirled and lifted on a fork">
+        <img
           className="hero__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1600&q=85"
-          aria-hidden="true"
-        >
-          <source src="https://videos.pexels.com/video-files/10059770/10059770-uhd_2160_4096_25fps.mp4" type="video/mp4" />
-        </video>
-        <div className="hero__photo-shade" />
+          src="/pasta-hero.webp"
+          alt="Sauce-coated pasta strands winding around a fork and lifting above a plate"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="hero__photo-shade" aria-hidden="true" />
         <div className="hero__visual-top">
           <span>FRESHLY MADE</span>
           <span>EST. WITH APPETITE</span>
@@ -50,7 +45,6 @@ export function HeroExperience() {
           <span className="hero__index">01 <i /> 06</span>
           <span className="hero__visual-title">THE PASTA<br />COLLECTION</span>
         </div>
-        <span className="hero__vertical-note">MADE TO BE REMEMBERED</span>
       </div>
       <div className="hero__bottom-rule" aria-hidden="true"><span /></div>
     </section>

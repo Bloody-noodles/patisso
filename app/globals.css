@@ -79,7 +79,7 @@ a { color: inherit; text-decoration: none; }
 .hero__discover-icon { width: 37px; height: 37px; border: 1px solid #f5ebd080; border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; transition: color .25s, background .25s, transform .25s; }
 .hero__discover:hover .hero__discover-icon { color: var(--wine); background: var(--sand); transform: translateY(3px); }
 
-.hero__visual { min-height: 610px; margin: 24px 24px 24px 0; position: relative; overflow: hidden; background: #5e2730; isolation: isolate; }
+.hero__visual { min-height: 0; aspect-ratio: 16 / 9; align-self: center; margin: 24px 24px 24px 0; position: relative; overflow: hidden; background: #5e2730; isolation: isolate; }
 .hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; transform: scale(1.06); filter: saturate(.92) contrast(1.06); transition: transform 1.8s cubic-bezier(.2,.7,.2,1); }
 .hero--ready .hero__video { transform: scale(1); }
 .hero__photo-shade { position: absolute; inset: 0; background: linear-gradient(180deg, #23050d28 0%, transparent 35%, #20040d72 100%), linear-gradient(90deg, #30071320, transparent 55%); }
@@ -138,7 +138,7 @@ a { color: inherit; text-decoration: none; }
   .hero__manifesto { font-size: 1.15rem; }
   .hero__discover { font-size: .48rem; }
   .hero__discover-icon { width: 34px; height: 34px; }
-  .hero__visual { min-height: 510px; margin: 0 12px 12px; }
+  .hero__visual { min-height: 0; aspect-ratio: 16 / 9; margin: 0 12px 18px; }
   .hero__photo { background-position: 50% 50%; }
   .hero__visual-top { top: 17px; left: 17px; right: 17px; font-size: .48rem; }
   .hero__visual-bottom { bottom: 18px; left: 17px; right: 17px; }
@@ -158,7 +158,7 @@ a { color: inherit; text-decoration: none; }
   .hero h1 { font-size: 4.35rem; }
   .hero__manifesto { font-size: 1.02rem; }
   .hero__discover { font-size: .43rem; }
-  .hero__visual { min-height: 420px; }
+  .hero__visual { min-height: 0; aspect-ratio: 16 / 9; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
