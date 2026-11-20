@@ -129,7 +129,7 @@ export function PastaCollection() {
       </article>
 
       <div className="pasta-collection__outro">
-        <span>AND THAT'S JUST THE BEGINNING.</span>
+        <span>AND THAT&apos;S JUST THE BEGINNING.</span>
         <span aria-hidden="true">✳</span>
         <span>GOOD THINGS TAKE A LITTLE TWIRLING.</span>
       </div>
