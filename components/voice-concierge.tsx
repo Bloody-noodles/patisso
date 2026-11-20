@@ -82,7 +82,8 @@ export function VoiceConcierge() {
   const [status, setStatus] = useState<CallStatus>("idle");
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState("");
-  const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);\n  const [demoOrderSaved, setDemoOrderSaved] = useState(false);
+  const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
+  const [demoOrderSaved, setDemoOrderSaved] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const inputContextRef = useRef<AudioContext | null>(null);
