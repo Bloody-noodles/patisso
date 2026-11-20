@@ -274,3 +274,9 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 @media(prefers-reduced-motion:reduce){.food-marquee-track,.hero-food-image,.hero-food-image img{animation:none!important}.food-marquee{white-space:normal}.food-marquee-track{width:100%;justify-content:center;flex-wrap:wrap;gap:10px 16px}}
 
 .footer-contact a{overflow-wrap:anywhere;}
+
+
+/* Accessibility and honest newsletter CTA */
+.skip-link{position:absolute;top:10px;left:10px;z-index:100;padding:12px 16px;transform:translateY(-160%);background:var(--ink);color:#fff;border-radius:4px;font-size:.8rem;font-weight:700}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--tomato);outline-offset:3px}
+.newsletter-section .primary-button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
