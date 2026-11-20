@@ -52,7 +52,8 @@ function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
     if (!rawItem || typeof rawItem !== "object") return null;
     const item = rawItem as { name?: unknown; quantity?: unknown };
     if (typeof item.name !== "string" || typeof item.quantity !== "number") return null;
-    const match = menuItems.find((entry) => entry.name.toLowerCase() === item.name!.trim().toLowerCase());
+    const itemName = item.name.trim().toLowerCase();
+    const match = menuItems.find((entry) => entry.name.toLowerCase() === itemName);
     if (!match || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) return null;
     const existing = requested.find((entry) => entry.name === match.name);
     if (existing) existing.quantity += item.quantity;
