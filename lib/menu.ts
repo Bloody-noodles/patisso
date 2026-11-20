@@ -65,14 +65,14 @@ export const menuGroups = [
     title: "A little something to drink.",
     intro: "The perfect pour to go with your plate, or enjoy all on its own.",
     items: [
-      ["Fresh Lemonade", "A bright, refreshing citrus drink.", "https://images.unsplash.com/photo-1513558161293-c1b6fc6a6e09?auto=format&fit=crop&w=1200&q=85", 6000],
+      ["Fresh Lemonade", "A bright, refreshing citrus drink.", "https://commons.wikimedia.org/wiki/Special:FilePath/Fresh_lemonade_and_lemons.jpg?width=1200", 6000],
       ["Iced Tea", "Chilled tea for a refreshing pause.", "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=1200&q=85", 5000],
       ["Mango Smoothie", "A smooth, fruity mango blend.", "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=1200&q=85", 9000],
       ["Strawberry Smoothie", "A cool strawberry drink with a creamy finish.", "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=1200&q=85", 9000],
-      ["Espresso", "A short, bold coffee.", "https://images.unsplash.com/photo-1510707577719-ae7c14805e76?auto=format&fit=crop&w=1200&q=85", 5000],
+      ["Espresso", "A short, bold coffee.", "https://commons.wikimedia.org/wiki/Special:FilePath/Espresso_cup.jpg?width=1200", 5000],
       ["Cappuccino", "Espresso with steamed milk and a soft foam top.", "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=1200&q=85", 7000],
       ["Still Water", "A simple chilled bottle of water.", "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=1200&q=85", 3000],
-      ["Sparkling Water", "Crisp sparkling water, served chilled.", "https://images.unsplash.com/photo-1606168094336-48f2057b2c9e?auto=format&fit=crop&w=1200&q=85", 4500]
+      ["Sparkling Water", "Crisp sparkling water, served chilled.", "https://commons.wikimedia.org/wiki/Special:FilePath/Bubbles_in_glass_of_water.jpg?width=1200", 4500]
     ]
   }
 ] as const;
