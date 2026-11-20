@@ -15,7 +15,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("h1")).toContainText("Take a taste");
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => document.fonts.ready.then(() => true));
   await page.evaluate(() => {
     document.querySelectorAll("img").forEach(image => { (image as HTMLImageElement).loading = "eager"; });
   });
@@ -78,7 +78,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
   await expect(page.locator(".site-nav")).toBeVisible();
-  await expect(page.locator(".food-gallery")).toHaveCSS("grid-template-columns", /\\d+px\\s+\\d+px/);
+  await expect(page.locator(".food-gallery")).toHaveCSS("grid-template-columns", /\d+px\s+\d+px/);
   const mobileA11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
