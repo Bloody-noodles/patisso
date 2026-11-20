@@ -8,12 +8,12 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Penne Arrabbiata** — [Penne Arrabbiata.jpg](https://commons.wikimedia.org/wiki/File:Penne_Arrabbiata.jpg)
 - **Fettuccine Alfredo** — [Fettuccine Alfredo.jpg](https://commons.wikimedia.org/wiki/File:Fettuccine_Alfredo.jpg)
 - **House Lasagna** — [Lasagna bolognese.jpg](https://commons.wikimedia.org/wiki/File:Lasagna_bolognese.jpg)
-- **Basil Pesto Fusilli** — [Basil pesto pasta.jpg](https://commons.wikimedia.org/wiki/File:Basil_pesto_pasta.jpg)
+- **Basil Pesto Pasta** — [Basil pesto pasta.jpg](https://commons.wikimedia.org/wiki/File:Basil_pesto_pasta.jpg)
 - **Mushroom Tagliatelle** — [Pasta with cream truffle and mushrooms in Savour Cafe.jpg](https://commons.wikimedia.org/wiki/File:Pasta_with_cream_truffle_and_mushrooms_in_Savour_Cafe.jpg)
 - **Tomato Basil Spaghetti** — [Spaghetti al Pomodoro.JPG](https://commons.wikimedia.org/wiki/File:Spaghetti_al_Pomodoro.JPG)
 - **Creamy Garlic Penne** — [Pasta Penne.jpg](https://commons.wikimedia.org/wiki/File:Pasta_Penne.jpg)
 - **Spaghetti Pomodoro** — [Spaghetti e pomodoro.jpg](https://commons.wikimedia.org/wiki/File:Spaghetti_e_pomodoro.jpg)
-- **Rigatoni alla Vodka** — [Penne alla Vodka.jpg](https://commons.wikimedia.org/wiki/File:Penne_alla_Vodka.jpg)
+- **Penne alla Vodka** — [Penne alla Vodka.jpg](https://commons.wikimedia.org/wiki/File:Penne_alla_Vodka.jpg)
 - **Pesto Gnocchi** — [Gnocchi al pesto 01.jpg](https://commons.wikimedia.org/wiki/File:Gnocchi_al_pesto_01.jpg)
 - **Baked Maccheroni** — [Baked Macaroni.jpg](https://commons.wikimedia.org/wiki/File:Baked_Macaroni.jpg)
 
@@ -25,7 +25,7 @@ The 28 menu-card photographs below are individual Wikimedia Commons files. Each 
 - **Garden Salad** — [Garden salad.jpg](https://commons.wikimedia.org/wiki/File:Garden_salad.jpg)
 - **Double Smash Burger** — [Smashburger.jpg](https://commons.wikimedia.org/wiki/File:Smashburger.jpg)
 - **Loaded Cheese Fries** — [Cheese Fries.jpg](https://commons.wikimedia.org/wiki/File:Cheese_Fries.jpg)
-- **Crispy Chicken Bites** — [Crispy Fried Chicken Strips.jpg](https://commons.wikimedia.org/wiki/File:Crispy_Fried_Chicken_Strips.jpg)
+- **Chicken Nuggets** — [Crispy Fried Chicken Strips.jpg](https://commons.wikimedia.org/wiki/File:Crispy_Fried_Chicken_Strips.jpg)
 - **Grilled Chicken Salad** — [Grilled Chicken Fattoush Salad.jpg](https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Fattoush_Salad.jpg)
 
 ## Bakery & sweets

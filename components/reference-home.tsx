@@ -7,12 +7,12 @@ const groups = [
 ["Penne Arrabbiata","Tomato, garlic, olive oil and a little chilli warmth.","https://commons.wikimedia.org/wiki/Special:FilePath/Penne%20Arrabbiata.jpg?width=1200"],
 ["Fettuccine Alfredo","Wide ribbons folded through velvety parmesan cream.","https://commons.wikimedia.org/wiki/Special:FilePath/Fettuccine%20Alfredo.jpg?width=1200"],
 ["House Lasagna","Tender layers, slow-cooked ragù and a golden top.","https://commons.wikimedia.org/wiki/Special:FilePath/Lasagna%20bolognese.jpg?width=1200"],
-["Basil Pesto Fusilli","Corkscrew pasta tossed in fragrant basil pesto.","https://commons.wikimedia.org/wiki/Special:FilePath/Basil%20pesto%20pasta.jpg?width=1200"],
+["Basil Pesto Pasta","Pasta tossed in fragrant basil pesto.","https://commons.wikimedia.org/wiki/Special:FilePath/Basil%20pesto%20pasta.jpg?width=1200"],
 ["Mushroom Tagliatelle","Silky ribbons with golden mushrooms and herbs.","https://commons.wikimedia.org/wiki/Special:FilePath/Pasta%20with%20cream%20truffle%20and%20mushrooms%20in%20Savour%20Cafe.jpg?width=1200"],
 ["Tomato Basil Spaghetti","Bright tomato sauce, fresh basil and a generous twirl.","https://commons.wikimedia.org/wiki/Special:FilePath/Spaghetti%20al%20Pomodoro.JPG?width=1200"],
 ["Creamy Garlic Penne","Penne in mellow garlic cream with parmesan.","https://commons.wikimedia.org/wiki/Special:FilePath/Pasta%20Penne.jpg?width=1200"],
 ["Spaghetti Pomodoro","Slow-simmered tomato, basil and a little parmesan.","https://commons.wikimedia.org/wiki/Special:FilePath/Spaghetti%20e%20pomodoro.jpg?width=1200"],
-["Rigatoni alla Vodka","Ridged rigatoni in a silky tomato cream sauce.","https://commons.wikimedia.org/wiki/Special:FilePath/Penne%20alla%20Vodka.jpg?width=1200"],
+["Penne alla Vodka","Penne in a silky tomato cream sauce with a little vodka warmth.","https://commons.wikimedia.org/wiki/Special:FilePath/Penne%20alla%20Vodka.jpg?width=1200"],
 ["Pesto Gnocchi","Pillowy gnocchi tossed with vibrant basil pesto.","https://commons.wikimedia.org/wiki/Special:FilePath/Gnocchi%20al%20pesto%2001.jpg?width=1200"],
 ["Baked Maccheroni","Golden baked pasta with a bubbling cheese top.","https://commons.wikimedia.org/wiki/Special:FilePath/Baked%20Macaroni.jpg?width=1200"]]},
 {id:"savoury",label:"SOMETHING SAVOURY",title:"Big bites. Good times.",intro:"Burgers, golden fries, fresh salads and all the savoury favourites.",items:[
@@ -22,7 +22,7 @@ const groups = [
 ["Garden Salad","Fresh greens, colour and a bright, lively finish.","https://commons.wikimedia.org/wiki/Special:FilePath/Garden%20salad.jpg?width=1200"],
 ["Double Smash Burger","Two seared patties, melted cheese and a toasted bun.","https://commons.wikimedia.org/wiki/Special:FilePath/Smashburger.jpg?width=1200"],
 ["Loaded Cheese Fries","Crispy fries finished with a generous cheese sauce.","https://commons.wikimedia.org/wiki/Special:FilePath/Cheese%20Fries.jpg?width=1200"],
-["Crispy Chicken Bites","Golden, crunchy bites made for dipping.","https://commons.wikimedia.org/wiki/Special:FilePath/Crispy%20Fried%20Chicken%20Strips.jpg?width=1200"],
+["Chicken Nuggets","Golden, crunchy chicken bites made for dipping.","https://commons.wikimedia.org/wiki/Special:FilePath/Chicken%20nuggets.jpg?width=1200"],
 ["Grilled Chicken Salad","Fresh greens with savoury grilled chicken.","https://commons.wikimedia.org/wiki/Special:FilePath/Grilled%20Chicken%20Fattoush%20Salad.jpg?width=1200"]]},
 {id:"bakery",label:"A LITTLE SOMETHING SWEET",title:"Save room for dessert.",intro:"Fresh-from-the-oven comforts and sweet things worth slowing down for.",items:[
 ["Chocolate Cake","A soft, rich slice for the sweet-toothed.","https://commons.wikimedia.org/wiki/Special:FilePath/ChocolateCake.jpg?width=1200"],
