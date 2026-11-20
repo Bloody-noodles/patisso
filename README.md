@@ -54,4 +54,4 @@ Pâtissö includes a browser-based voice concierge prototype powered by Gemini L
 
 Add \`GEMINI_API_KEY\` to your local \`.env.local\` or the Vercel project's Environment Variables, then redeploy. Never commit the key.
 
-The current voice milestone establishes the live call interface and audio transport. Menu-aware answers, cart actions and simulated order placement are subsequent milestones.
+The voice concierge uses the same shared menu catalogue as the food galleries. Gemini Live receives the current dish names and supplied descriptions, can recommend only listed dishes, and maintains conversational context during the call. A function-calling action can create a simulated order after the visitor has heard the item/quantity read-back and explicitly confirmed it. The page validates every item against the menu, limits quantities, and displays a demo receipt/reference in the voice panel. The receipt is client-side session state only: it is not stored in a database, sent to a restaurant, priced, paid for, or fulfilled.
