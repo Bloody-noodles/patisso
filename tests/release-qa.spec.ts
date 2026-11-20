@@ -15,7 +15,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
 
   await page.waitForFunction(() => {
     const images = Array.from(document.images);
-    return images.length >= 32 && images.every(image => image.complete && image.naturalWidth > 0);
+    return images.length >= 33 && images.every(image => image.complete);
   }, null, { timeout: 180_000 });
 
   const imageAudit = await page.locator("img").evaluateAll(images =>
@@ -23,9 +23,11 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
       alt: image.getAttribute("alt") ?? "",
       src: (image as HTMLImageElement).currentSrc,
       width: (image as HTMLImageElement).naturalWidth,
+      loaded: (image as HTMLImageElement).naturalWidth > 0,
     }))
   );
-  expect(imageAudit).toHaveLength(32);
+  expect(imageAudit).toHaveLength(33);
+  expect(imageAudit.filter(image => !image.loaded)).toEqual([]);
   expect(imageAudit.filter(image => !image.alt.trim())).toEqual([]);
   expect(await page.locator(".food-card").count()).toBe(28);
   expect(await page.locator(".food-card img").count()).toBe(28);
