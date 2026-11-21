@@ -9,12 +9,12 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.json({ error: "Sign in to access the operations console." }, { status: 401 });
   if (!supabaseAdminReady()) return NextResponse.json({ error: "Order database is not configured." }, { status: 503 });
 
-  const query = new URLSearchParams({ select: "reference,items,total_tsh,special_instructions,status,created_at,updated_at", order: "created_at.desc", limit: "200" });
+  const query = new URLSearchParams({ select: "reference,items,total_naira,special_instructions,status,created_at,updated_at", order: "created_at.desc", limit: "200" });
   const response = await supabaseAdminFetch(`patisso_demo_orders?${query.toString()}`);
   if (!response.ok) return NextResponse.json({ error: "Could not load demo orders." }, { status: 502 });
   const rows = await response.json() as Array<Record<string, unknown>>;
   return NextResponse.json({ orders: rows.map((row) => ({
-    reference: row.reference, items: row.items, totalTsh: row.total_tsh,
+    reference: row.reference, items: row.items, totalNaira: row.total_naira,
     specialInstructions: row.special_instructions, status: row.status,
     createdAt: row.created_at, updatedAt: row.updated_at,
   })) }, { headers: { "Cache-Control": "no-store" } });
