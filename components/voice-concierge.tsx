@@ -64,7 +64,8 @@ export function VoiceConcierge() {
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState("");
   const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
-  const [demoOrderSaved, setDemoOrderSaved] = useState(false);\n  const [trackingUrl, setTrackingUrl] = useState("");
+  const [demoOrderSaved, setDemoOrderSaved] = useState(false);
+  const [trackingUrl, setTrackingUrl] = useState("");
   const [voiceLevel, setVoiceLevel] = useState(0);
   const panelRef = useRef<HTMLElement | null>(null);
   const launcherRef = useRef<HTMLButtonElement | null>(null);
