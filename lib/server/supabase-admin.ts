@@ -13,7 +13,10 @@ export async function supabaseAdminFetch(path: string, init: RequestInit = {}) {
   }
   const headers = new Headers(init.headers);
   headers.set("apikey", serviceRoleKey);
-  headers.set("Authorization", `Bearer ${serviceRoleKey}`);
+  // New sb_secret keys are opaque and must not be sent as Bearer JWTs.
+  if (!serviceRoleKey.startsWith("sb_secret_")) {
+    headers.set("Authorization", `Bearer ${serviceRoleKey}`);
+  }
   headers.set("Content-Type", "application/json");
   headers.set("Accept", "application/json");
   return fetch(`${supabaseUrl}/rest/v1/${path}`, {
