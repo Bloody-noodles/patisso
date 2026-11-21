@@ -8,7 +8,7 @@ create table if not exists public.patisso_demo_orders (
   id uuid primary key default gen_random_uuid(),
   reference text not null unique check (length(reference) between 8 and 20),
   items jsonb not null check (jsonb_typeof(items) = 'array' and jsonb_array_length(items) between 1 and 8),
-  total_tsh integer not null check (total_tsh >= 0),
+  total_naira integer not null check (total_naira >= 0),
   special_instructions text not null default '' check (length(special_instructions) <= 240),
   status text not null default 'confirmed' check (status in ('confirmed', 'completed', 'cancelled')),
   tracking_token_hash text not null check (tracking_token_hash ~ '^[a-f0-9]{64}
