@@ -134,7 +134,7 @@ test("authenticated central demo console updates private order tracking", async 
   const fixture = {
     reference: "A1B2C3D4",
     items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 7000, lineTotal: 14000 }],
-    totalNaira: 36000,
+    totalNaira: 14000,
     specialInstructions: "No extra chilli",
     status,
     createdAt: "2026-11-20T12:00:00.000Z",
