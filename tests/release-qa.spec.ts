@@ -101,9 +101,16 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   await revealPage();
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(mobileOverflow).toBe(false);
+  const mobileMenuButton = page.getByRole("button", { name: "Open navigation menu" });
+  await expect(mobileMenuButton).toBeVisible();
+  await mobileMenuButton.click();
+  await expect(page.getByRole("button", { name: "Close navigation menu" })).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator(".site-nav")).toBeVisible();
   const mobileNavFits = await page.locator(".site-nav").evaluate(element => element.scrollWidth <= element.clientWidth + 1);
   expect(mobileNavFits).toBe(true);
+  await page.locator('.site-nav a[href="#pasta"]').click();
+  await expect(page.locator(".site-nav")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Open navigation menu" })).toHaveAttribute("aria-expanded", "false");
   const mobileGridColumns = await page.locator(".food-gallery").first().evaluate(element => getComputedStyle(element).gridTemplateColumns.split(" ").length);
   expect(mobileGridColumns).toBe(2);
   const mobileA11y = await new AxeBuilder({ page })
