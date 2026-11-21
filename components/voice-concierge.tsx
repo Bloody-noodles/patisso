@@ -44,10 +44,12 @@ function makeOrderRequest(args: Record<string, unknown>): { items: { name: strin
   for (const raw of args.items) {
     if (!raw || typeof raw !== "object") return null;
     const item = raw as { name?: unknown; quantity?: unknown };
-    if (typeof item.name !== "string" || typeof item.quantity !== "number") return null;
-    const match = menuItems.find((entry) => entry.name.toLowerCase() === item.name!.trim().toLowerCase());
-    if (!match || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) return null;
-    items.push({ name: match.name, quantity: item.quantity });
+    const itemName = item.name;
+    const quantity = item.quantity;
+    if (typeof itemName !== "string" || typeof quantity !== "number") return null;
+    const match = menuItems.find((entry) => entry.name.toLowerCase() === itemName.trim().toLowerCase());
+    if (!match || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) return null;
+    items.push({ name: match.name, quantity });
   }
   if (items.reduce((sum, item) => sum + item.quantity, 0) > 20) return null;
   return {
