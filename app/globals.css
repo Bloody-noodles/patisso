@@ -446,3 +446,11 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
   .voice-orb--listening b{transform:none}
   .voice-action,.voice-launcher,.voice-close{transition:none}
 }
+
+.console-login{width:min(100%,560px);margin:3rem auto 0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #d8cdb9;background:#fffaf0}
+.console-login h1{margin:.4rem 0 1rem}
+.console-login>p:not(.voice-kicker){max-width:42ch;color:#6b6257;line-height:1.65}
+.console-login .track-form{margin-top:1.75rem}
+.console-header nav button{border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.console-header nav button:hover{text-decoration:underline}
+.console-toolbar input:focus-visible,.track-form input:focus-visible,.console-header nav button:focus-visible{outline:2px solid #7f011f;outline-offset:3px}
