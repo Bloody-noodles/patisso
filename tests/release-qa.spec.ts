@@ -119,6 +119,7 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile-viewport.png"), fullPage: false, animations: "disabled" });
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile.png"), fullPage: true, animations: "disabled" });
 
+  await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
   await page.keyboard.press("Tab");
   await expect(page.locator(".skip-link")).toBeFocused();
   expect(desktopA11y.violations).toEqual([]);
@@ -181,7 +182,7 @@ test("authenticated central demo console updates private order tracking", async 
   await page.getByLabel("ORDER REFERENCE").fill("A1B2C3D4");
   await page.getByLabel("PRIVATE TRACKING KEY").fill("a".repeat(64));
   await page.getByRole("button", { name: "Find demo order" }).click();
-  await expect(page.locator(".track-status")).toContainText("Demo order marked complete");
+  await expect(page.locator(".track-status")).toContainText("Your demo order is complete");
   await expect(page.locator(".track-receipt")).toContainText("Penne Arrabbiata");
   await expect(page.locator(".track-receipt")).toContainText("₦14,000");
 });
