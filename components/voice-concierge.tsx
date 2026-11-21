@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { formatTsh, menuForAssistant, menuItems } from "@/lib/menu";
-import { loadDemoOrders, saveDemoOrder, type DemoOrder } from "@/lib/demo-orders";
+import type { DemoOrder } from "@/lib/demo-orders";
 
 type CallStatus = "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
 type TranscriptLine = { role: "you" | "patisso"; text: string };
@@ -38,42 +38,21 @@ function encodePcm(samples: Float32Array) {
   return btoa(binary);
 }
 
-function makeDemoOrder(args: Record<string, unknown>): DemoOrder | null {
-  if (args.visitorConfirmed !== true) return null;
-  if (!Array.isArray(args.items) || args.items.length === 0 || args.items.length > 8) return null;
-
-  const requested: DemoOrder["items"] = [];
-  for (const rawItem of args.items) {
-    if (!rawItem || typeof rawItem !== "object") return null;
-    const item = rawItem as { name?: unknown; quantity?: unknown };
+function makeOrderRequest(args: Record<string, unknown>): { items: { name: string; quantity: number }[]; specialInstructions: string } | null {
+  if (args.visitorConfirmed !== true || !Array.isArray(args.items) || args.items.length < 1 || args.items.length > 8) return null;
+  const items: { name: string; quantity: number }[] = [];
+  for (const raw of args.items) {
+    if (!raw || typeof raw !== "object") return null;
+    const item = raw as { name?: unknown; quantity?: unknown };
     if (typeof item.name !== "string" || typeof item.quantity !== "number") return null;
-    const itemName = item.name.trim().toLowerCase();
-    const match = menuItems.find((entry) => entry.name.toLowerCase() === itemName);
+    const match = menuItems.find((entry) => entry.name.toLowerCase() === item.name!.trim().toLowerCase());
     if (!match || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) return null;
-    const existing = requested.find((entry) => entry.name === match.name);
-    if (existing) {
-      existing.quantity += item.quantity;
-      existing.lineTotal = existing.quantity * existing.unitPrice;
-    } else requested.push({ name: match.name, quantity: item.quantity, unitPrice: match.price, lineTotal: match.price * item.quantity });
+    items.push({ name: match.name, quantity: item.quantity });
   }
-
-  const totalQuantity = requested.reduce((sum, item) => sum + item.quantity, 0);
-  if (totalQuantity > 20) return null;
-
-  const note = typeof args.specialInstructions === "string"
-    ? args.specialInstructions.trim().slice(0, 240)
-    : "";
-  const reference = typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID().slice(0, 8).toUpperCase()
-    : Date.now().toString(36).toUpperCase();
-
+  if (items.reduce((sum, item) => sum + item.quantity, 0) > 20) return null;
   return {
-    reference,
-    items: requested,
-    totalTsh: requested.reduce((sum, item) => sum + item.lineTotal, 0),
-    specialInstructions: note,
-    createdAt: new Date().toISOString(),
-    status: "confirmed",
+    items,
+    specialInstructions: typeof args.specialInstructions === "string" ? args.specialInstructions.trim().slice(0, 240) : "",
   };
 }
 
@@ -83,7 +62,7 @@ export function VoiceConcierge() {
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState("");
   const [demoOrder, setDemoOrder] = useState<DemoOrder | null>(null);
-  const [demoOrderSaved, setDemoOrderSaved] = useState(false);
+  const [demoOrderSaved, setDemoOrderSaved] = useState(false);\n  const [trackingUrl, setTrackingUrl] = useState("");
   const [voiceLevel, setVoiceLevel] = useState(0);
   const panelRef = useRef<HTMLElement | null>(null);
   const launcherRef = useRef<HTMLButtonElement | null>(null);
@@ -140,17 +119,6 @@ export function VoiceConcierge() {
     closeButtonRef.current?.focus();
     return () => launcherRef.current?.focus();
   }, [open]);
-
-  useEffect(() => {
-    const initialFrame = window.requestAnimationFrame(() => {
-      const previousOrders = loadDemoOrders();
-      if (previousOrders.length > 0) {
-        setDemoOrder(previousOrders[0]);
-        setDemoOrderSaved(true);
-      }
-    });
-    return () => window.cancelAnimationFrame(initialFrame);
-  }, []);
 
   useEffect(() => () => {
     closedByUserRef.current = true;
@@ -363,45 +331,54 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
 
           const calls = message.toolCall?.functionCalls ?? message.serverContent?.toolCall?.functionCalls ?? [];
           if (calls.length > 0) {
-            const functionResponses = calls.map((call) => {
+            const functionResponses = await Promise.all(calls.map(async (call) => {
               if (call.name !== "create_demo_order") {
                 return { id: call.id, name: call.name, response: { ok: false, message: "Unknown action." } };
               }
-              const order = makeDemoOrder(call.args ?? {});
-              if (!order) {
+              const requestBody = makeOrderRequest(call.args ?? {});
+              if (!requestBody) {
+                return {
+                  id: call.id,
+                  name: call.name,
+                  response: { ok: false, message: "The order could not be validated. Check menu item names, quantities and explicit visitor confirmation." }
+                };
+              }
+              try {
+                const response = await fetch("/api/orders", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ ...requestBody, visitorConfirmed: true }),
+                });
+                const result = await response.json();
+                if (!response.ok || !result.ok || !result.order) {
+                  return { id: call.id, name: call.name, response: { ok: false, message: result.error ?? "The order could not be saved. Please try again." } };
+                }
+                const order = result.order as DemoOrder;
+                setDemoOrder(order);
+                setDemoOrderSaved(true);
+                setTrackingUrl(result.trackingUrl as string);
+                setTranscript((current) => [
+                  ...current,
+                  { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
+                ].slice(-12));
                 return {
                   id: call.id,
                   name: call.name,
                   response: {
-                    ok: false,
-                    message: "The order could not be matched to the current menu. Please check exact dish names and quantities between 1 and 10."
+                    ok: true,
+                    simulated: true,
+                    reference: order.reference,
+                    items: order.items,
+                    totalTsh: order.totalTsh,
+                    formattedTotal: formatTsh(order.totalTsh),
+                    trackingUrl: result.trackingUrl,
+                    message: "The simulated demo order has been saved to the central Pâtissö demo database. The total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
                   }
                 };
+              } catch {
+                return { id: call.id, name: call.name, response: { ok: false, message: "The order service could not be reached. Please try again." } };
               }
-              setDemoOrder(order);
-              const stored = saveDemoOrder(order);
-              setDemoOrderSaved(stored);
-              setTranscript((current) => [
-                ...current,
-                { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
-              ].slice(-12));
-              return {
-                id: call.id,
-                name: call.name,
-                response: {
-                  ok: true,
-                  simulated: true,
-                  reference: order.reference,
-                  items: order.items,
-                  totalTsh: order.totalTsh,
-                  formattedTotal: formatTsh(order.totalTsh),
-                  stored,
-                  message: stored
-                    ? "The simulated demo order is saved in this browser. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
-                    : "The simulated order receipt is available for this call, but browser storage was unavailable so tracking may not work after the call. Its total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
-                }
-              };
-            });
+            }));
             socket.send(JSON.stringify({ toolResponse: { functionResponses } }));
           }
 
@@ -545,8 +522,8 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </ul>
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
-                {demoOrderSaved && <a className="voice-track-link" href="/track">Track this demo order ↗</a>}
-                <p className="voice-order-foot">{demoOrderSaved ? "Saved in this browser only. Nothing has been sent to a restaurant." : "Temporary receipt only: browser storage was unavailable. Nothing has been sent to a restaurant."}</p>
+                {demoOrderSaved && <a className="voice-track-link" href={trackingUrl}>Track this demo order ↗</a>}
+                <p className="voice-order-foot">{demoOrderSaved ? "Saved securely to the central demo database. Nothing has been sent to a restaurant." : "This is a simulated receipt. Nothing has been sent to a restaurant."}</p>
               </section>
             )}
             {status === "idle" || status === "error" ? (
