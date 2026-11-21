@@ -10,13 +10,13 @@ export type DemoOrderLine = {
 export type DemoOrder = {
   reference: string;
   items: DemoOrderLine[];
-  totalTsh: number;
+  totalNaira: number;
   specialInstructions: string;
   createdAt: string;
   status: DemoOrderStatus;
 };
 
-const STORAGE_KEY = "patisso-demo-orders-v2";
+const STORAGE_KEY = "patisso-demo-orders-v3";
 
 function isDemoOrder(value: unknown): value is DemoOrder {
   if (!value || typeof value !== "object") return false;
@@ -27,7 +27,7 @@ function isDemoOrder(value: unknown): value is DemoOrder {
       Number.isInteger(line.quantity) && line.quantity > 0 &&
       Number.isFinite(line.unitPrice) && line.unitPrice >= 0 &&
       Number.isFinite(line.lineTotal) && line.lineTotal >= 0)) &&
-    typeof order.totalTsh === "number" && Number.isFinite(order.totalTsh) &&
+    typeof order.totalNaira === "number" && Number.isFinite(order.totalNaira) &&
     typeof order.specialInstructions === "string" &&
     typeof order.createdAt === "string" &&
     ["confirmed", "completed", "cancelled"].includes(order.status ?? "");
