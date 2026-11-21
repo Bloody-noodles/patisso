@@ -30,14 +30,17 @@ export default function TrackDemoOrderPage() {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("reference") ?? "";
-    const secret = params.get("token") ?? "";
-    if (ref && secret) {
-      setReference(ref);
-      setToken(secret);
-      void lookup(ref, secret);
-    }
+    const frame = window.requestAnimationFrame(() => {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("reference") ?? "";
+      const secret = params.get("token") ?? "";
+      if (ref && secret) {
+        setReference(ref);
+        setToken(secret);
+        void lookup(ref, secret);
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [lookup]);
 
   function trackOrder(event: FormEvent<HTMLFormElement>) {
