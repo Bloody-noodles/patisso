@@ -32,19 +32,21 @@ export async function POST(request: Request) {
 
   const lines: { name: string; quantity: number; unitPrice: number; lineTotal: number }[] = [];
   for (const raw of body.items as IncomingLine[]) {
-    if (!raw || typeof raw.name !== "string" || typeof raw.quantity !== "number") {
+    const rawName = raw?.name;
+    const quantity = raw?.quantity;
+    if (typeof rawName !== "string" || typeof quantity !== "number") {
       return NextResponse.json({ error: "Each order line needs a menu item and quantity." }, { status: 400 });
     }
-    const match = menuItems.find((item) => item.name.toLowerCase() === raw.name!.trim().toLowerCase());
-    if (!match || !Number.isInteger(raw.quantity) || raw.quantity < 1 || raw.quantity > 10) {
+    const match = menuItems.find((item) => item.name.toLowerCase() === rawName.trim().toLowerCase());
+    if (!match || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
       return NextResponse.json({ error: "An item or quantity does not match the current menu." }, { status: 400 });
     }
     const existing = lines.find((line) => line.name === match.name);
     if (existing) {
-      existing.quantity += raw.quantity;
+      existing.quantity += quantity;
       existing.lineTotal = existing.quantity * existing.unitPrice;
     } else {
-      lines.push({ name: match.name, quantity: raw.quantity, unitPrice: match.price, lineTotal: match.price * raw.quantity });
+      lines.push({ name: match.name, quantity, unitPrice: match.price, lineTotal: match.price * quantity });
     }
   }
 
