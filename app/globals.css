@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap');
 
 :root {
   --paper: #f7f6f2;
@@ -11,7 +11,7 @@
   --green: #4f6b39;
   --line: #e5e1d8;
   --display: "DM Sans", Arial, sans-serif;
-  --serif: "Playfair Display", Georgia, serif;
+  --serif: "DM Serif Display", Georgia, serif;
   --gutter: clamp(22px, 6.3vw, 100px);
 }
 * { box-sizing: border-box; }
@@ -479,3 +479,109 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .track-notification-button:hover{background:var(--tomato-contrast);color:#fff}
 .track-notification-enabled{margin:12px 0 0;color:#777064;font-size:.61rem;line-height:1.5}
 @media(max-width:420px){.track-progress{gap:5px;padding:12px 8px}.track-progress-step{gap:5px}.track-progress-step b{font-size:.56rem}}
+
+
+/* Design refinement: mobile navigation, typography rhythm and consistent interaction states */
+:root {
+  --display: "DM Sans", Arial, sans-serif;
+  --serif: "DM Serif Display", Georgia, serif;
+  --focus-ring: #7f011f;
+}
+html { scroll-padding-top: 88px; }
+[id] { scroll-margin-top: 22px; }
+a, button, input { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+button:disabled { cursor: not-allowed; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.mobile-nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-white);
+  color: var(--ink);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+.mobile-nav-toggle span {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform .2s ease;
+}
+.mobile-nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.mobile-nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+.site-nav a { min-height: 40px; display: inline-flex; align-items: center; }
+.primary-button, .header-cta, .category-tab, .carousel-arrow, .voice-launcher, .voice-action {
+  min-height: 44px;
+}
+.food-card, .plate-overview-card { transition: transform .28s ease, filter .28s ease; }
+.food-card:hover, .plate-overview-card:hover { transform: translateY(-4px); }
+.food-card:focus-within, .plate-overview-card:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 5px;
+}
+.food-card-image, .plate-overview-image { overflow: hidden; }
+.food-card-image img, .plate-overview-image img { transition: transform .55s cubic-bezier(.2,.7,.2,1); }
+.food-card:hover .food-card-image img, .plate-overview-card:hover .plate-overview-image img {
+  transform: scale(1.045);
+}
+.category-tab:focus-visible, .carousel-arrow:focus-visible { outline-offset: 3px; }
+.voice-backdrop { overscroll-behavior: contain; }
+.voice-panel { overscroll-behavior: contain; }
+.voice-transcript { overflow-wrap: anywhere; }
+@media (max-width: 680px) {
+  html { scroll-padding-top: 72px; }
+  .site-header { position: sticky; top: 0; z-index: 40; }
+  .mobile-nav-toggle { display: inline-flex; }
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    z-index: 45;
+    padding: 12px var(--gutter) 18px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: #fbfaf7f7;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 18px 28px #25201812;
+    backdrop-filter: blur(14px);
+  }
+  .site-nav.is-open { display: flex; }
+  .site-nav a {
+    min-height: 46px;
+    padding: 0 4px;
+    border-bottom: 1px solid #eae7df;
+    font-size: .78rem;
+  }
+  .site-nav a::after { display: none; }
+  .site-nav a.is-active { color: var(--tomato-contrast); }
+  .header-actions { gap: 8px; }
+  .header-cta { padding: 9px 12px; gap: 8px; }
+  .food-card:hover, .plate-overview-card:hover { transform: none; }
+}
+@media (max-width: 380px) {
+  .header-cta { font-size: .54rem; padding-inline: 9px; }
+  .wordmark { font-size: 1.52rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
