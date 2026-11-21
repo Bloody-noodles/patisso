@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { formatTsh } from "@/lib/menu";
+import { formatNaira } from "@/lib/menu";
 import type { DemoOrder, DemoOrderStatus } from "@/lib/demo-orders";
 
 type Filter = "all" | DemoOrderStatus;
@@ -69,7 +69,7 @@ export default function DemoConsolePage() {
     confirmed: orders.filter((order) => order.status === "confirmed").length,
     completed: orders.filter((order) => order.status === "completed").length,
     cancelled: orders.filter((order) => order.status === "cancelled").length,
-    value: orders.filter((order) => order.status !== "cancelled").reduce((sum, order) => sum + order.totalTsh, 0),
+    value: orders.filter((order) => order.status !== "cancelled").reduce((sum, order) => sum + order.totalNaira, 0),
   }), [orders]);
 
   async function signIn(event: FormEvent<HTMLFormElement>) {
@@ -114,10 +114,10 @@ export default function DemoConsolePage() {
   }
 
   function exportOrders() {
-    const rows = [["Reference", "Created", "Status", "Items", "Total TSh", "Special instructions"],
+    const rows = [["Reference", "Created", "Status", "Items", "Total ₦", "Special instructions"],
       ...visibleOrders.map((order) => [order.reference, order.createdAt, order.status,
         order.items.map((item) => `${item.name} x${item.quantity}`).join("; "),
-        String(order.totalTsh), order.specialInstructions])];
+        String(order.totalNaira), order.specialInstructions])];
     const csv = rows.map((row) => row.map((cell) => `"${cell.replaceAll('"', '""')}"`).join(",")).join("\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const anchor = document.createElement("a"); anchor.href = url; anchor.download = "patisso-demo-orders.csv";
@@ -164,7 +164,7 @@ export default function DemoConsolePage() {
               <article><span>ALL DEMO ORDERS</span><b>{counts.all}</b></article>
               <article><span>AWAITING REVIEW</span><b>{counts.confirmed}</b></article>
               <article><span>COMPLETED</span><b>{counts.completed}</b></article>
-              <article><span>DEMO VALUE · TSh</span><b>{counts.value.toLocaleString("en-TZ")}</b></article>
+              <article><span>DEMO VALUE · ₦</span><b>{counts.value.toLocaleString("en-NG")}</b></article>
             </div>
             <div className="console-toolbar">
               <div className="console-filters" aria-label="Filter orders">
@@ -180,9 +180,9 @@ export default function DemoConsolePage() {
               <div className="console-orders">{visibleOrders.map((order) => <article className="console-order" key={order.reference}>
                 <div className="console-order-top"><div><span>ORDER REFERENCE</span><h2>#{order.reference}</h2><small>{new Date(order.createdAt).toLocaleString()}</small></div>
                   <span className={"console-status console-status--" + order.status}>{order.status}</span></div>
-                <ul>{order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>)}</ul>
+                <ul>{order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatNaira(item.unitPrice)} each</small></span><b>{formatNaira(item.lineTotal)}</b></li>)}</ul>
                 {order.specialInstructions && <p className="console-note">Visitor note: {order.specialInstructions}</p>}
-                <div className="console-order-bottom"><span>DEMO TOTAL <b>{formatTsh(order.totalTsh)}</b></span><div>
+                <div className="console-order-bottom"><span>DEMO TOTAL <b>{formatNaira(order.totalNaira)}</b></span><div>
                   {order.status !== "completed" && <button type="button" disabled={busy} onClick={() => void changeStatus(order.reference, "completed")}>Mark completed</button>}
                   {order.status !== "cancelled" && <button type="button" className="console-cancel" disabled={busy} onClick={() => void changeStatus(order.reference, "cancelled")}>Cancel demo</button>}
                   {order.status !== "confirmed" && <button type="button" className="console-reset" disabled={busy} onClick={() => void changeStatus(order.reference, "confirmed")}>Reopen</button>}
