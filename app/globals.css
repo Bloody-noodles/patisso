@@ -462,3 +462,20 @@ html{scroll-padding-top:92px}.site-header{position:sticky;top:0}
 .console-header nav button{border:0;background:none;color:inherit;font:inherit;cursor:pointer}
 .console-header nav button:hover{text-decoration:underline}
 .console-toolbar input:focus-visible,.track-form input:focus-visible,.console-header nav button:focus-visible{outline:2px solid #7f011f;outline-offset:3px}
+
+
+/* Live customer order tracking */
+.track-live-notice{margin:15px 0 0;padding:12px 14px;border:1px solid #c9d9c1;border-left:3px solid #4f6b39;background:#f1f6ed;color:#35552e;font-size:.72rem;font-weight:800;line-height:1.5}
+.track-progress{display:flex;align-items:center;gap:10px;margin:22px 0 12px;padding:15px 12px;border:1px solid #e8ded1;border-radius:5px;background:#fbf8f1}
+.track-progress-step{display:flex;align-items:center;gap:8px;flex:1;min-width:0;color:#999185;font-size:.65rem}
+.track-progress-step>span{width:25px;height:25px;flex:0 0 25px;display:grid;place-items:center;border:1px solid #d8d0c3;border-radius:50%;font-size:.62rem;font-weight:900}
+.track-progress-step b{font-size:.63rem}
+.track-progress-step.is-reached{color:#426b3d}
+.track-progress-step.is-reached>span{border-color:#64845a;background:#e4eee1;color:#426b3d}
+.track-progress-step.is-current b{color:var(--tomato-contrast)}
+.track-cancelled-note{flex-basis:100%;margin:7px 0 0;color:#97473c;font-size:.65rem}
+.track-updated{margin:5px 0 0;color:#888176;font-size:.59rem}
+.track-notification-button{margin-top:14px;padding:10px 13px;border:1px solid var(--tomato-contrast);border-radius:4px;background:transparent;color:var(--tomato-contrast);font-size:.64rem;font-weight:800}
+.track-notification-button:hover{background:var(--tomato-contrast);color:#fff}
+.track-notification-enabled{margin:12px 0 0;color:#777064;font-size:.61rem;line-height:1.5}
+@media(max-width:420px){.track-progress{gap:5px;padding:12px 8px}.track-progress-step{gap:5px}.track-progress-step b{font-size:.56rem}}
