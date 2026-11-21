@@ -44,11 +44,10 @@ export default function TrackDemoOrderPage() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !("Notification" in window)) {
-      setNotificationPermission("unsupported");
-    } else {
-      setNotificationPermission(Notification.permission);
-    }
+    const frame = window.requestAnimationFrame(() => {
+      setNotificationPermission("Notification" in window ? Notification.permission : "unsupported");
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
