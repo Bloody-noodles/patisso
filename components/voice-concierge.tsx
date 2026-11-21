@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { formatTsh, menuForAssistant, menuItems } from "@/lib/menu";
+import { formatNaira, menuForAssistant, menuItems } from "@/lib/menu";
 import type { DemoOrder } from "@/lib/demo-orders";
 
 type CallStatus = "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
@@ -240,7 +240,7 @@ export function VoiceConcierge() {
               parts: [{
                 text: `You are Pâtissö's warm, polished voice concierge. You are speaking to a visitor on the Pâtissö restaurant demo website. Be welcoming, natural, concise and helpful. Speak like a thoughtful human host, not a call-centre script. Ask one clear question at a time, use the visitor's wording, remember their preferences throughout this call, and do not repeat questions they have already answered.
 
-Here is the complete current website menu. Only recommend or accept dishes from this list. The descriptions and TSh prices below are the complete menu details supplied; do not invent ingredients, sizes, allergens, availability, opening hours, or delivery promises.
+Here is the complete current website menu. Only recommend or accept dishes from this list. The descriptions and ₦ prices below are the complete menu details supplied; do not invent ingredients, sizes, allergens, availability, opening hours, or delivery promises.
 
 ${menuForAssistant}
 
@@ -250,13 +250,13 @@ ORDER FLOW:
 - You can build a simulated order during this voice call.
 - Ask which dish or dishes they want and the quantity for each. Clarify any ambiguous item.
 - You may capture a short preference as a special instruction, but never promise it can be fulfilled.
-- Read back every item, quantity, unit price and line total, then state the grand total in Tanzanian Shillings (TSh). Ask: "Shall I confirm this demo order?"
+- Read back every item, quantity, unit price and line total, then state the grand total in Nigerian Naira (₦). Ask: "Shall I confirm this demo order?"
 - Do NOT call create_demo_order until the visitor clearly says yes or otherwise explicitly confirms after hearing the complete read-back. When calling, set visitorConfirmed to true. Never set it true based on an assumption, silence, or an earlier unrelated yes.
 - If they change their mind, update the proposed order and read it back again before asking for confirmation.
 - Call create_demo_order only with exact menu item names and valid quantities. If the tool rejects the request, apologise briefly and clarify the item.
-- After a successful tool response, read the reference and grand total in TSh. If stored is true, say the demo order is saved in this browser. If stored is false, explain that the receipt is temporary and tracking may not persist. Always make clear it is simulated.
+- After a successful tool response, read the reference and grand total in Nigerian Naira (₦). If stored is true, say the demo order is saved in this browser. If stored is false, explain that the receipt is temporary and tracking may not persist. Always make clear it is simulated.
 
-This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Use only the exact TSh prices in the menu. The order tool calculates and returns the authoritative total; never estimate or mentally recalculate it. Keep turns short and conversational, and allow interruptions.`
+This is a portfolio demonstration, not a real restaurant. No food is prepared, no payment is taken, and no real order is sent to a kitchen or delivery service. Never imply otherwise. Use only the exact ₦ prices in the menu. The order tool calculates and returns the authoritative total; never estimate or mentally recalculate it. Keep turns short and conversational, and allow interruptions.`
               }],
             },
           },
@@ -372,10 +372,10 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                     simulated: true,
                     reference: order.reference,
                     items: order.items,
-                    totalTsh: order.totalTsh,
-                    formattedTotal: formatTsh(order.totalTsh),
+                    totalNaira: order.totalNaira,
+                    formattedTotal: formatNaira(order.totalNaira),
                     trackingUrl: result.trackingUrl,
-                    message: "The simulated demo order has been saved to the central Pâtissö demo database. The total is " + formatTsh(order.totalTsh) + ". No real restaurant received it."
+                    message: "The simulated demo order has been saved to the central Pâtissö demo database. The total is " + formatNaira(order.totalNaira) + ". No real restaurant received it."
                   }
                 };
               } catch {
@@ -520,10 +520,10 @@ This is a portfolio demonstration, not a real restaurant. No food is prepared, n
                 </div>
                 <ul>
                   {demoOrder.items.map((item) => (
-                    <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>
+                    <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatNaira(item.unitPrice)} each</small></span><b>{formatNaira(item.lineTotal)}</b></li>
                   ))}
                 </ul>
-                <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatTsh(demoOrder.totalTsh)}</b></div>
+                <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatNaira(demoOrder.totalNaira)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
                 {demoOrderSaved && <a className="voice-track-link" href={trackingUrl}>Track this demo order ↗</a>}
                 <p className="voice-order-foot">{demoOrderSaved ? "Saved securely to the central demo database. Nothing has been sent to a restaurant." : "This is a simulated receipt. Nothing has been sent to a restaurant."}</p>
