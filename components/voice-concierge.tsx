@@ -148,6 +148,26 @@ export function VoiceConcierge() {
         throw new Error("This browser does not support microphone access. Try a recent version of Chrome.");
       }
 
+      // iOS Safari may suspend Web Audio until it is resumed directly from
+      // the user's tap. Create and resume both contexts before awaiting
+      // microphone permission or any network request.
+      const inputContext = new AudioContext({ sampleRate: 16000 });
+      const outputContext = new AudioContext({ sampleRate: 24000 });
+      inputContextRef.current = inputContext;
+      outputContextRef.current = outputContext;
+
+      let audioContextError: unknown = null;
+      const audioContextsReady = Promise.all([
+        inputContext.resume(),
+        outputContext.resume(),
+      ]).then(
+        () => true,
+        (caught: unknown) => {
+          audioContextError = caught;
+          return false;
+        },
+      );
+
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true },
       });
@@ -156,6 +176,15 @@ export function VoiceConcierge() {
         return;
       }
       streamRef.current = stream;
+
+      if (!(await audioContextsReady)) {
+        throw audioContextError instanceof Error
+          ? audioContextError
+          : new Error("Your browser could not start audio playback. Please tap to try again.");
+      }
+      if (inputContext.state !== "running" || outputContext.state !== "running") {
+        throw new Error("Audio is not ready. Please try starting the call again.");
+      }
 
       const tokenResponse = await fetch("/api/gemini/token", {
         method: "POST",
@@ -168,15 +197,7 @@ export function VoiceConcierge() {
         throw new Error(tokenData.error || "The voice assistant is not configured yet.");
       }
 
-      const inputContext = new AudioContext({ sampleRate: 16000 });
-      const outputContext = new AudioContext({ sampleRate: 24000 });
-      inputContextRef.current = inputContext;
-      outputContextRef.current = outputContext;
-      await Promise.all([inputContext.resume(), outputContext.resume()]);
-      if (!isCurrentAttempt()) {
-        await Promise.all([inputContext.close(), outputContext.close()]);
-        return;
-      }
+      if (!isCurrentAttempt()) return;
 
       const socket = new WebSocket(LIVE_SOCKET + encodeURIComponent(tokenData.token));
       socketRef.current = socket;
