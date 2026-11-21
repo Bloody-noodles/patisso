@@ -119,11 +119,11 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile-viewport.png"), fullPage: false, animations: "disabled" });
   await page.screenshot({ path: testInfo.outputPath("patisso-mobile.png"), fullPage: true, animations: "disabled" });
 
-  await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
-  await page.keyboard.press("Tab");
-  await expect(page.locator(".skip-link")).toBeFocused();
   expect(desktopA11y.violations).toEqual([]);
   expect(mobileA11y.violations).toEqual([]);
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".skip-link")).toBeFocused();
   expect(pageErrors).toEqual([]);
 });
 
