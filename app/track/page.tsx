@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { formatTsh } from "@/lib/menu";
+import { formatNaira } from "@/lib/menu";
 import type { DemoOrder } from "@/lib/demo-orders";
 
 export default function TrackDemoOrderPage() {
@@ -72,9 +72,9 @@ export default function TrackDemoOrderPage() {
             <div className="track-status"><span className={"track-status-dot track-status-dot--" + order.status} /> {order.status === "confirmed" ? "Demo order confirmed" : order.status === "completed" ? "Demo order marked complete" : "Demo order cancelled"}</div>
             <p className="track-created">Created {new Date(order.createdAt).toLocaleString()}</p>
             <ul>
-              {order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatTsh(item.unitPrice)} each</small></span><b>{formatTsh(item.lineTotal)}</b></li>)}
+              {order.items.map((item) => <li key={item.name}><span>{item.name} × {item.quantity}<small>{formatNaira(item.unitPrice)} each</small></span><b>{formatNaira(item.lineTotal)}</b></li>)}
             </ul>
-            <div className="track-total"><span>ORDER TOTAL</span><b>{formatTsh(order.totalTsh)}</b></div>
+            <div className="track-total"><span>ORDER TOTAL</span><b>{formatNaira(order.totalNaira)}</b></div>
             {order.specialInstructions && <p className="track-note">Note: {order.specialInstructions}</p>}
             <p className="track-disclaimer">This is a centrally stored portfolio demo. It is not connected to a live restaurant, kitchen, payment or delivery service.</p>
           </section>
