@@ -120,32 +120,48 @@ test("desktop and mobile release QA: layout, images, links and accessibility", a
 });
 
 
-test("local demo console updates the order status shown by tracking", async ({ page }) => {
+test("authenticated central demo console updates private order tracking", async ({ page }) => {
   const healthResponse = await page.request.get("/api/health");
   expect(healthResponse.ok()).toBe(true);
   const health = await healthResponse.json();
   expect(health.ok).toBe(true);
   expect(typeof health.voiceConfigured).toBe("boolean");
-  expect(health.orderStorage).toBe("browser-local-demo");
+  expect(["supabase-central-demo", "not-configured"]).toContain(health.orderStorage);
   expect(health.realPaymentsEnabled).toBe(false);
   expect(health.realFulfilmentEnabled).toBe(false);
 
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.addInitScript(() => {
-    if (localStorage.getItem("patisso-demo-test-seeded")) return;
-    localStorage.setItem("patisso-demo-test-seeded", "1");
-    localStorage.setItem("patisso-demo-orders-v1", JSON.stringify([{
-      reference: "TEST1234",
-      items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 18000, lineTotal: 36000 }],
-      totalTsh: 36000,
-      specialInstructions: "No extra chilli",
-      createdAt: "2026-11-20T12:00:00.000Z"
-    }]));
-  });
+  let status = "confirmed";
+  const fixture = {
+    reference: "A1B2C3D4",
+    items: [{ name: "Penne Arrabbiata", quantity: 2, unitPrice: 18000, lineTotal: 36000 }],
+    totalTsh: 36000,
+    specialInstructions: "No extra chilli",
+    status,
+    createdAt: "2026-11-20T12:00:00.000Z",
+  };
 
+  await page.route("**/api/admin/session", route => route.fulfill({ status: 401, json: { authenticated: false } }));
+  await page.route("**/api/admin/login", route => route.fulfill({ status: 200, json: { ok: true, email: "admin@example.com" } }));
+  await page.route("**/api/admin/orders", async route => {
+    if (route.request().method() === "PATCH") {
+      const body = route.request().postDataJSON() as { status: string };
+      status = body.status;
+      return route.fulfill({ status: 200, json: { ok: true } });
+    }
+    return route.fulfill({ status: 200, json: { orders: [{ ...fixture, status }] } });
+  });
+  await page.route("**/api/orders/track?**", route => route.fulfill({
+    status: 200,
+    json: { order: { ...fixture, status } },
+  }));
+
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/demo-console");
-  await expect(page.locator("h1")).toContainText("Order");
-  await expect(page.locator(".console-order")).toContainText("TEST1234");
+  await expect(page.locator("h1")).toContainText("Admin");
+  await page.getByLabel("ADMIN EMAIL").fill("admin@example.com");
+  await page.getByLabel("PASSWORD").fill("test-password");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.locator(".console-order")).toContainText("A1B2C3D4");
   await expect(page.locator(".console-order")).toContainText("TSh 36,000");
   const consoleA11y = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
   expect(consoleA11y.violations).toEqual([]);
@@ -155,7 +171,8 @@ test("local demo console updates the order status shown by tracking", async ({ p
   expect(consoleOverflow).toBe(false);
 
   await page.goto("/track");
-  await page.getByLabel("ORDER REFERENCE").fill("TEST1234");
+  await page.getByLabel("ORDER REFERENCE").fill("A1B2C3D4");
+  await page.getByLabel("PRIVATE TRACKING KEY").fill("a".repeat(64));
   await page.getByRole("button", { name: "Find demo order" }).click();
   await expect(page.locator(".track-status")).toContainText("Demo order marked complete");
   await expect(page.locator(".track-receipt")).toContainText("Penne Arrabbiata");
