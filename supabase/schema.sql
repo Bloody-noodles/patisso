@@ -23,6 +23,7 @@ create index if not exists patisso_demo_orders_status_idx
   on public.patisso_demo_orders (status);
 
 alter table public.patisso_demo_orders enable row level security;
+revoke all privileges on table public.patisso_demo_orders from anon, authenticated;
 
 -- No anon/authenticated policies are created by design.
 -- A future server-side API must validate every order against the shared menu
