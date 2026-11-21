@@ -16,14 +16,14 @@ export async function GET(request: Request) {
 
   try {
     const query = new URLSearchParams({
-      select: "reference,items,total_tsh,special_instructions,status,created_at,tracking_token_hash",
+      select: "reference,items,total_naira,special_instructions,status,created_at,tracking_token_hash",
       reference: `eq.${reference}`,
       limit: "1",
     });
     const response = await supabaseAdminFetch(`patisso_demo_orders?${query.toString()}`);
     if (!response.ok) return NextResponse.json({ error: "Tracking is temporarily unavailable." }, { status: 503 });
     const rows = await response.json() as Array<{
-      reference: string; items: unknown; total_tsh: number; special_instructions: string;
+      reference: string; items: unknown; total_naira: number; special_instructions: string;
       status: string; created_at: string; tracking_token_hash: string;
     }>;
     const row = rows[0];
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       order: {
         reference: row.reference,
         items: row.items,
-        totalTsh: row.total_tsh,
+        totalNaira: row.total_naira,
         specialInstructions: row.special_instructions,
         status: row.status,
         createdAt: row.created_at,
