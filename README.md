@@ -8,7 +8,7 @@ A pasta-led, food-first restaurant brand and voice-ordering portfolio demo. It i
 - **Palette:** wine red and light sand.
 - **Typography:** bold condensed display headings with an elegant editorial serif.
 - **Structure:** cinematic food hero, category overview, separate long-scroll galleries for Pasta, Savoury, Bakery & Sweets, and Drinks, editorial story, social CTA and footer.
-- **Catalogue:** 36 illustrative items across four categories, with Tanzanian Shilling prices and dish-matched photography.
+- **Catalogue:** 36 illustrative items across four categories, with Nigerian Naira (₦) prices and dish-matched photography.
 
 Images, descriptions and prices are illustrative portfolio-demo content, not an approved commercial menu or price list.
 
