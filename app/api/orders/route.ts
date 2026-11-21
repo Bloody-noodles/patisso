@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   const reference = randomBytes(4).toString("hex").toUpperCase();
   const trackingToken = randomBytes(32).toString("hex");
   const trackingTokenHash = createHash("sha256").update(trackingToken).digest("hex");
-  const totalTsh = lines.reduce((sum, line) => sum + line.lineTotal, 0);
+  const totalNaira = lines.reduce((sum, line) => sum + line.lineTotal, 0);
 
   try {
     const response = await supabaseAdminFetch("patisso_demo_orders", {
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         reference,
         items: lines,
-        total_tsh: totalTsh,
+        total_naira: totalNaira,
         special_instructions: specialInstructions,
         tracking_token_hash: trackingTokenHash,
         status: "confirmed",
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
       order: {
         reference,
         items: lines,
-        totalTsh,
+        totalNaira,
         specialInstructions,
         createdAt: saved.created_at,
         status: saved.status,
