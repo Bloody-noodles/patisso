@@ -383,14 +383,13 @@ Be transparent when it matters: if a visitor asks whether food will actually be 
                 setTrackingUrl(result.trackingUrl as string);
                 setTranscript((current) => [
                   ...current,
-                  { role: "patisso" as const, text: `Demo order recorded · Reference ${order.reference}` }
+                  { role: "patisso" as const, text: `Order recorded · Reference ${order.reference}` }
                 ].slice(-12));
                 return {
                   id: call.id,
                   name: call.name,
                   response: {
                     ok: true,
-                    simulated: true,
                     reference: order.reference,
                     items: order.items,
                     totalNaira: order.totalNaira,
@@ -534,9 +533,9 @@ Be transparent when it matters: if a visitor asks whether food will actually be 
               ))}
             </div>
             {demoOrder && (
-              <section className="voice-order" aria-live="polite" aria-label="Simulated demo order confirmation">
+              <section className="voice-order" aria-live="polite" aria-label="Order confirmation">
                 <div className="voice-order-heading">
-                  <span>DEMO ORDER CONFIRMED</span>
+                  <span>ORDER CONFIRMED</span>
                   <b>#{demoOrder.reference}</b>
                 </div>
                 <ul>
@@ -546,7 +545,7 @@ Be transparent when it matters: if a visitor asks whether food will actually be 
                 </ul>
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatNaira(demoOrder.totalNaira)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
-                {demoOrderSaved && <a className="voice-track-link" href={trackingUrl}>Track this demo order ↗</a>}
+                {demoOrderSaved && <a className="voice-track-link" href={trackingUrl}>Track order ↗</a>}
                 <p className="voice-order-foot">{demoOrderSaved ? "Saved securely to the central demo database. Nothing has been sent to a restaurant." : "This is a simulated receipt. Nothing has been sent to a restaurant."}</p>
               </section>
             )}
