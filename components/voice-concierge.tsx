@@ -546,7 +546,7 @@ Be transparent when it matters: if a visitor asks whether food will actually be 
                 <div className="voice-order-total"><span>ORDER TOTAL</span><b>{formatNaira(demoOrder.totalNaira)}</b></div>
                 {demoOrder.specialInstructions && <p className="voice-order-note">Your note: {demoOrder.specialInstructions}</p>}
                 {demoOrderSaved && <a className="voice-track-link" href={trackingUrl}>Track order ↗</a>}
-                <p className="voice-order-foot">{demoOrderSaved ? "Saved securely to the central demo database. Nothing has been sent to a restaurant." : "This is a simulated receipt. Nothing has been sent to a restaurant."}</p>
+                <p className="voice-order-foot">{demoOrderSaved ? "Recorded here only; no kitchen has received this order." : "This receipt is a preview; no restaurant has received the order."}</p>
               </section>
             )}
             {status === "idle" || status === "error" ? (
@@ -558,7 +558,7 @@ Be transparent when it matters: if a visitor asks whether food will actually be 
                 End call
               </button>
             )}
-            <p className="voice-disclaimer">Demo experience · No real orders or payments</p>
+            <p className="voice-disclaimer">Menu guidance · Order recording · No payment taken</p>
           </section>
         </div>
       )}
